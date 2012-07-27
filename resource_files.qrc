@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="/sys/sys_icon">
+        <file>remote_main.ico</file>
+        <file>sources/ABOUT.png</file>
+        <file>sources/LOGO.png</file>
+        <file>sources/OFF.png</file>
+        <file>sources/ON.png</file>
+        <file>sources/start.png</file>
+        <file>sources/OFF_h32.png</file>
+        <file>sources/on_h32.png</file>
+        <file>sources/01.png</file>
+        <file>sources/02.png</file>
+        <file>sources/03.png</file>
+        <file>sources/04.png</file>
+        <file>sources/05.png</file>
+        <file>sources/06.png</file>
+        <file>sources/07.png</file>
+        <file>sources/08.png</file>
+        <file>sources/09.png</file>
+        <file>sources/10.png</file>
+        <file>sources/11.png</file>
+        <file>sources/12.png</file>
+        <file>sources/13.png</file>
+        <file>sources/14.png</file>
+        <file>sources/15.png</file>
+        <file>sources/16.png</file>
+        <file>sources/alarm_clock.png</file>
+        <file>sources/ten_cross.png</file>
+    </qresource>
+    <qresource prefix="/icon/heart">
+        <file>heart.svg</file>
+    </qresource>
+    <qresource prefix="/language">
+        <file>remotectlmultemgr_zh.qm</file>
+    </qresource>
+</RCC>
