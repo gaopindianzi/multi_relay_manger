@@ -12,9 +12,11 @@
 #include "qeditipconfigdialog.h"
 #include "qpasswordmangerdialog.h"
 #include "qioexpendsettingdialog.h"
+#include "view_items_select.h"
  #include <QCoreApplication>
 #include "AboutDialog.h"
 #include <QThread>
+#include <QFile>
 
 
 #include "debug.h"
@@ -122,6 +124,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+    AppInfoLoad();
+
     centralWidget = new QWidget;
     setCentralWidget(centralWidget);
 
@@ -140,14 +145,44 @@ MainWindow::MainWindow(QWidget *parent) :
 
         //初始化UDP接口
         InitUdpSocket();
+
+
+        resize(app_info.app_with,app_info.app_height);
+
+}
+
+void MainWindow::AppInfoLoad(void)
+{
+    QFile file("multideviceappinfo.dat");
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);
+    in >> app_info;
+    file.close();
+}
+
+void MainWindow::AppInfoSave(void)
+{
+    app_info.filename = "multideviceappinfo.dat";
+    QFile file(app_info.filename);
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+    out << app_info;
+    file.close();
 }
 
 MainWindow::~MainWindow()
 {
+    app_info.app_with = width();
+    app_info.app_height = height();
+    app_info.row_height = deviceTable->rowHeight(0);
+
+    for(int i=0;i<deviceTable->columnCount();i++) {
+        app_info.colomn_withs[i] = deviceTable->columnWidth(i);
+    }
+
+    AppInfoSave();
     delete ui;
 }
-
-
 
 void MainWindow::sleep(unsigned int ms)
 {
@@ -164,7 +199,10 @@ void MainWindow::CreateAction(void)
 {
     this->quitact = new QAction(tr("&Quit"), this);
     connect(quitact, SIGNAL(triggered()), this, SLOT(Quit()));
-    //
+
+    this->view_select_item_act = new QAction(tr("ItemViewSetting..."), this);
+    connect(view_select_item_act, SIGNAL(triggered()), this, SLOT(ViewSelectItemAct()));
+
     this->edit_device_param_act = new QAction(tr("&Edit device parameter..."), this);
     connect(edit_device_param_act, SIGNAL(triggered()), this, SLOT(EditDeviceParam()));
 
@@ -224,6 +262,16 @@ void MainWindow::CreateAction(void)
     trayIcon->show();
 
 }
+
+
+void MainWindow::ViewSelectItemAct(void)
+{
+    debuginfo(("ViewSelectItemAct"));
+    view_items_select dlg;
+    dlg.exec();
+}
+
+
 void MainWindow::showMinimized(void)
 {
     debuginfo(("shwo minized..."));
@@ -273,6 +321,8 @@ void MainWindow::CreateMenu(void)
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(quitact);
+    //fileMenu = menuBar()->addMenu(tr("View"));
+    //fileMenu->addAction(this->view_select_item_act);
     toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(edit_device_param_act);
     toolsMenu->addAction(edit_device_ipconfig);
@@ -428,9 +478,13 @@ void MainWindow::CloseAllListDeviceIoOutput(void)
 
 void MainWindow::CreateDevcieTable(void)
 {
-    unsigned int index = 0;
+        int index = 0;
         deviceGroupBox = new QGroupBox(tr("DeviceTable"));
         deviceTable = new QDeviceControlWidget;
+
+        deviceTable->verticalHeader()->resizeSections(QHeaderView::Interactive);
+        deviceTable->verticalHeader()->setDefaultSectionSize(app_info.row_height);
+
         deviceTable->setSelectionMode(QAbstractItemView::NoSelection);
         deviceTable->setItemDelegateForColumn(index++,new QCheckBoxDelegate(this));
         deviceTable->setItemDelegateForColumn(index++,new QDeviceNameDelegate(this));
@@ -457,14 +511,19 @@ void MainWindow::CreateDevcieTable(void)
         deviceTable->setHorizontalHeaderLabels(labels);
         //deviceTable->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
         index = 0;
-        deviceTable->horizontalHeader()->resizeSection(index++,50);
-        deviceTable->horizontalHeader()->resizeSection(index++,120);
+        deviceTable->horizontalHeader()->resizeSection(index,app_info.colomn_withs[index]);
+        index++;
+        //
+        deviceTable->horizontalHeader()->resizeSection(index,app_info.colomn_withs[index]);
+        index++;
         deviceTable->horizontalHeader()->resizeSection(index++,100);
         deviceTable->horizontalHeader()->resizeSection(index++,80);
+
         deviceTable->horizontalHeader()->resizeSection(index++,80);
 
         //deviceTable->horizontalHeader()->setResizeMode(index, QHeaderView::Fixed);
-        deviceTable->horizontalHeader()->resizeSection(index++,300);
+        //deviceTable->horizontalHeader()->resizeSection(index++,300);
+        deviceTable->horizontalHeader()->resizeSection(index++,app_info.colomn_withs[5]);
 
         deviceTable->horizontalHeader()->resizeSection(index++,60);
         deviceTable->horizontalHeader()->resizeSection(index++,60);
@@ -472,7 +531,13 @@ void MainWindow::CreateDevcieTable(void)
 #if APP_DISPLAY_TIME
         deviceTable->horizontalHeader()->resizeSection(index++,120);
 #endif
-        deviceTable->verticalHeader()->hide();
+        //QHeaderView::InteractivedeviceTable->verticalHeader()->hide();
+
+        deviceTable->hideColumn(2);
+        deviceTable->hideColumn(3);
+        deviceTable->hideColumn(4);
+        deviceTable->hideColumn(6);
+        deviceTable->hideColumn(7);
         deviceTable->hideColumn(index-1);
         //排版
         QVBoxLayout *layout = new QVBoxLayout;
@@ -532,6 +597,9 @@ void MainWindow::manualAddDevice(int index)
      //modelReset
      connect(pdev.data(),SIGNAL(DeviceInfoChanged(QString)),this,SLOT(DeviceInfoChanged(QString))); //,Qt::QueuedConnection);
      connect(pdev.data(),SIGNAL(DeviceAckStatus(QString)),this,SLOT(DevcieAckStstus(QString)));
+
+     //deviceTable->setRowHeight(row,80);
+
  }
 
 void MainWindow::InitUdpSocket(void)

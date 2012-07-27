@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     qpasswordmangerdialog.cpp \
     rc4.cpp \
     qioexpendsettingdialog.cpp \
-    AboutDialog.cpp
+    AboutDialog.cpp \
+    view_items_select.cpp \
+    appinfo.cpp
 
 HEADERS  += mainwindow.h \
     debug.h \
@@ -48,14 +50,17 @@ HEADERS  += mainwindow.h \
     PasswordItemDef.h \
     qioexpendsettingdialog.h \
     AboutDialog.h \
-    command_datatype.h
+    command_datatype.h \
+    view_items_select.h \
+    appinfo.h
 
 FORMS    += mainwindow.ui \
     editparamdialog.ui \
     qeditipconfigdialog.ui \
     qpasswordmangerdialog.ui \
     qioexpendsettingdialog.ui \
-    AboutDialog.ui
+    AboutDialog.ui \
+    view_items_select.ui
 
 RC_FILE = myapp.rc
 

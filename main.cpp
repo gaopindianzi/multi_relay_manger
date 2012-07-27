@@ -68,4 +68,6 @@ int main(int argc, char *argv[])
     return a.exec();
 
     delete splash;
+
+    return 0;
 }

@@ -17,6 +17,7 @@
 #include <QTranslator>
 #include <QThread>
 #include "PasswordItemDef.h"
+#include "appinfo.h"
 
 #define    APP_DISPLAY_TIME             1
 
@@ -67,6 +68,8 @@ private:
     void manualAddDevice(int index);
     void InsertDevice(QSharedPointer<QRelayDeviceControl> & pdev);    
     void retranslateUI(void);
+    void AppInfoLoad(void);
+    void AppInfoSave(void);
 protected: //Ðéº¯Êý
     void setVisible(bool visible);
     void changeEvent(QEvent * event );
@@ -82,6 +85,7 @@ private slots:
     void UdpreadPendingDatagrams();
     void DeviceInfoChanged(QString hostaddrID);
     void Quit(void);
+    void ViewSelectItemAct(void);
     void EditDeviceParam(void);
     void EditDeviceIpconfig(void);
     void ClearDeviceTable(void);
@@ -97,6 +101,7 @@ signals:
     void DeviceUpdata(QSharedPointer<QRelayDeviceControl> & pdev);
 private:
     QAction * quitact;
+    QAction * view_select_item_act;
     QAction * edit_device_param_act;
     QAction * edit_device_ipconfig;
     QAction * cleardevicetable;
@@ -110,6 +115,7 @@ private:
     QMenu *fileMenu;
     QMenu *toolsMenu;
 private:
+    AppInfo    app_info;
     QWidget *centralWidget;
     //device table
     QGroupBox *deviceGroupBox;

@@ -45,7 +45,7 @@ void QCheckBoxDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     QRectF rect = option.rect;
     QColor color;
     QString indexstr;
-    indexstr.sprintf("    %d",pdev->index);
+    //indexstr.sprintf("    %d",pdev->index);
     painter->save();
     painter->eraseRect(rect);
     painter->setPen(color);
