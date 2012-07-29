@@ -149,6 +149,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
         resize(app_info.app_with,app_info.app_height);
 
+
 }
 
 void MainWindow::AppInfoLoad(void)
