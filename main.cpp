@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     splash->setPixmap(QPixmap(":/sys/sys_icon/sources/start.png"));
     splash->show();
 
-    w.sleep(3);
+    w.sleep(0);
     w.show();
     //w.showMaximized();
     splash->finish(&w);

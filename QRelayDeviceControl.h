@@ -25,6 +25,7 @@
 //sys_init_bitmask的位定义
 #define SYS_IO_NAME           (1<<0)
 #define SYS_IO_TIME            (1<<1)
+#define SYS_IO_VAL              (1<<2)
 
 class QRelayDeviceControl : public QObject
 {
@@ -77,6 +78,9 @@ public:
     void      ResetDevice(void);
     QBitArray   relay_bitmask;
     QSharedPointer<device_info_st> & GetDeviceInfo(void) { return pdev_info; }
+    QVector<timing_node> & GetDeviceIoOutTimingList(void) { return io_out_timing_list; }
+    QTime ConvertOnceTimingNodeToQTime(timing_node & node);
+    int       GetDeviceTimeSecs(void);
 private:
     void      SendCommandData(const char * buffer,int len);
 private:
@@ -120,14 +124,24 @@ private:  //TCP接口数据
     QVector<timing_node>  io_out_timing_list;
     //状态机函数
     void  SetTcpSysStatus(int newState,QString string);
-    void  TcpStartReadIoNames(void);
     void  TcpReadIoNames(void);
     void  TcpAckIoNames(QByteArray & buffer);
     //定时
-    void  TcpStartReadTimimgs(void);
     void  TcpReadTimimgs(void);
-    void TcpAckReadTimimgs(QByteArray & buffer);
+    void  TcpAckReadTimimgs(QByteArray & buffer);
+    //TCP模式的读IO值
+    void TcpReadIoInValue(void);
+    void TcpReReadIoInValue(void);
+    void TcpAckReadIoInValue(QByteArray & buffer);
+    //TCP写定时器数据
+
+    void TcpReWriteIoOutTiming(void);
+    void TcpAckWriteIoOutTiming(QByteArray & buffer);
     //多余的东东
+public:
+    void  TcpStartReadIoNames(void);
+    void  TcpStartReadTimimgs(void);
+    void  TcpStartWriteIoOutTiming(void);
 private slots:
     void	tcpconnected ();
     void	tcpdisconnected ();

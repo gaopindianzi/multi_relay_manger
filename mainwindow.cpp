@@ -41,7 +41,6 @@ QDeviceControlWidget::QDeviceControlWidget(QWidget * parent)
 
 void QDeviceControlWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-#if 1 //尚未实现
     debuginfo(("at context event."));
     const QPoint & pos = event->pos();
     QTableWidgetItem * item = this->itemAt(pos);
@@ -62,7 +61,6 @@ void QDeviceControlWidget::contextMenuEvent(QContextMenuEvent *event)
     } else {
         debuginfo(("item is not exist: item type"));
     }
-#endif
 }
 
 void  QDeviceControlWidget::IoSettingDialog(void)
@@ -79,6 +77,10 @@ void  QDeviceControlWidget::IoOutCountDownSettingAct(void)
     QAction * act = (QAction *)sender();
     QSharedPointer<QRelayDeviceControl> pdev = qVariantValue<RelayDeviceSharePonterType>(act->data());
     //debuginfo((" this io devcie is = %s",pdev->GetDeviceName().toAscii().data()));
+
+    //先读定时器寄存器，延时1S
+   // pdev->TcpStartReadTimimgs();
+
     DialogCountdownOutput dlg(pdev);
     dlg.setWindowTitle(pdev->GetDeviceName());
     dlg.exec();
@@ -138,9 +140,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-    AppInfoLoad();
-
     centralWidget = new QWidget;
     setCentralWidget(centralWidget);
 
@@ -160,29 +159,7 @@ MainWindow::MainWindow(QWidget *parent) :
         //初始化UDP接口
         InitUdpSocket();
 
-
         resize(app_info.app_with,app_info.app_height);
-
-
-}
-
-void MainWindow::AppInfoLoad(void)
-{
-    QFile file("multideviceappinfo.dat");
-    file.open(QIODevice::ReadOnly);
-    QDataStream in(&file);
-    in >> app_info;
-    file.close();
-}
-
-void MainWindow::AppInfoSave(void)
-{
-    app_info.filename = "multideviceappinfo.dat";
-    QFile file(app_info.filename);
-    file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
-    out << app_info;
-    file.close();
 }
 
 MainWindow::~MainWindow()
@@ -195,7 +172,6 @@ MainWindow::~MainWindow()
         app_info.colomn_withs[i] = deviceTable->columnWidth(i);
     }
 
-    AppInfoSave();
     delete ui;
 }
 

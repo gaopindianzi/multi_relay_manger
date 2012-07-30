@@ -117,7 +117,6 @@ private:
     QMenu *fileMenu;
     QMenu *toolsMenu;
 private:
-    AppInfo    app_info;
     QWidget *centralWidget;
     //device table
     QGroupBox *deviceGroupBox;

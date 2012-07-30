@@ -29,7 +29,7 @@ SOURCES += main.cpp\
     AboutDialog.cpp \
     view_items_select.cpp \
     appinfo.cpp \
-    dialogcountdownoutput.cpp
+    Dialogcountdownoutput.cpp
 
 HEADERS  += mainwindow.h \
     debug.h \
@@ -54,7 +54,7 @@ HEADERS  += mainwindow.h \
     command_datatype.h \
     view_items_select.h \
     appinfo.h \
-    dialogcountdownoutput.h
+    Dialogcountdownoutput.h
 
 FORMS    += mainwindow.ui \
     editparamdialog.ui \
