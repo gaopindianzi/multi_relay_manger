@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
     w.sleep(3);
     w.show();
-    w.showMaximized();
+    //w.showMaximized();
     splash->finish(&w);
 
     return a.exec();

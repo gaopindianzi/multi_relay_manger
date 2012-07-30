@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     qioexpendsettingdialog.cpp \
     AboutDialog.cpp \
     view_items_select.cpp \
-    appinfo.cpp
+    appinfo.cpp \
+    dialogcountdownoutput.cpp
 
 HEADERS  += mainwindow.h \
     debug.h \
@@ -52,7 +53,8 @@ HEADERS  += mainwindow.h \
     AboutDialog.h \
     command_datatype.h \
     view_items_select.h \
-    appinfo.h
+    appinfo.h \
+    dialogcountdownoutput.h
 
 FORMS    += mainwindow.ui \
     editparamdialog.ui \
@@ -60,7 +62,8 @@ FORMS    += mainwindow.ui \
     qpasswordmangerdialog.ui \
     qioexpendsettingdialog.ui \
     AboutDialog.ui \
-    view_items_select.ui
+    view_items_select.ui \
+    dialogcountdownoutput.ui
 
 RC_FILE = myapp.rc
 

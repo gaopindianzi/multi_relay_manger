@@ -17,11 +17,12 @@
 #include "AboutDialog.h"
 #include <QThread>
 #include <QFile>
+#include "dialogcountdownoutput.h"
 
 
 #include "debug.h"
 
-#define THISINFO            0
+#define THISINFO              1
 #define THISERROR           1
 #define THISASSERT          1
 
@@ -34,6 +35,8 @@ QDeviceControlWidget::QDeviceControlWidget(QWidget * parent)
 {
     this->setIoExternSetAction = new QAction(tr("&IoExpendSetting..."), this);
     connect(setIoExternSetAction, SIGNAL(triggered()), this, SLOT(IoSettingDialog()));
+    CountdownMangerAct = new QAction(tr("Count Down Manger..."), this);
+    connect(CountdownMangerAct, SIGNAL(triggered()), this, SLOT(IoOutCountDownSettingAct()));
 }
 
 void QDeviceControlWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -50,6 +53,8 @@ void QDeviceControlWidget::contextMenuEvent(QContextMenuEvent *event)
             QMenu menu(this);
             setIoExternSetAction->setData(var);
             menu.addAction(setIoExternSetAction);
+            CountdownMangerAct->setData(var);
+            menu.addAction(CountdownMangerAct);
             menu.exec(event->globalPos());
         } else {
             debuginfo(("pdev is not valid!"));
@@ -66,6 +71,15 @@ void  QDeviceControlWidget::IoSettingDialog(void)
     QSharedPointer<QRelayDeviceControl> pdev = qVariantValue<RelayDeviceSharePonterType>(act->data());
     //debuginfo((" this io devcie is = %s",pdev->GetDeviceName().toAscii().data()));
     QIoExpendSettingDialog dlg(pdev);
+    dlg.setWindowTitle(pdev->GetDeviceName());
+    dlg.exec();
+}
+void  QDeviceControlWidget::IoOutCountDownSettingAct(void)
+{
+    QAction * act = (QAction *)sender();
+    QSharedPointer<QRelayDeviceControl> pdev = qVariantValue<RelayDeviceSharePonterType>(act->data());
+    //debuginfo((" this io devcie is = %s",pdev->GetDeviceName().toAscii().data()));
+    DialogCountdownOutput dlg(pdev);
     dlg.setWindowTitle(pdev->GetDeviceName());
     dlg.exec();
 }

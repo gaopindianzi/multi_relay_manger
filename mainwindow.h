@@ -37,9 +37,11 @@ public:
 private slots:
     void  IoSettingDialog(void);
     void  RemoveOneItemActioN(void);
+    void  IoOutCountDownSettingAct(void);
 private:   
     void contextMenuEvent(QContextMenuEvent *event);
     QAction * setIoExternSetAction;
+    QAction * CountdownMangerAct;
 };
 
 
