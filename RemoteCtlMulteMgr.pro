@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     AboutDialog.cpp \
     view_items_select.cpp \
     appinfo.cpp \
-    Dialogcountdownoutput.cpp
+    Dialogcountdownoutput.cpp \
+    waitfinisheddialog.cpp
 
 HEADERS  += mainwindow.h \
     debug.h \
@@ -54,7 +55,8 @@ HEADERS  += mainwindow.h \
     command_datatype.h \
     view_items_select.h \
     appinfo.h \
-    Dialogcountdownoutput.h
+    Dialogcountdownoutput.h \
+    waitfinisheddialog.h
 
 FORMS    += mainwindow.ui \
     editparamdialog.ui \
@@ -63,7 +65,8 @@ FORMS    += mainwindow.ui \
     qioexpendsettingdialog.ui \
     AboutDialog.ui \
     view_items_select.ui \
-    dialogcountdownoutput.ui
+    dialogcountdownoutput.ui \
+    waitfinisheddialog.ui
 
 RC_FILE = myapp.rc
 

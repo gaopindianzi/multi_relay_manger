@@ -39,10 +39,9 @@ public:
     explicit DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWidget *parent = 0);
     ~DialogCountdownOutput();
 public:
-    int   secs_escape_form_start(int index);
-    int   secs_escape_form_end(int index);
-    int   secs_start_to_end(int index);
-    void SetAndWriteIoOutOnceTiming(int index,QTime & start,QTime & end);
+    void SetAndWriteIoOutOnceTiming(int index,QDateTime & start,QDateTime & end);
+private:
+    void SetRemainTimeAndProgressBar(int index,QDateTime start,QDateTime current,QDateTime end,bool isfirstone = 0);
 private:
     Ui::DialogCountdownOutput *ui;
 
@@ -60,6 +59,8 @@ private slots:
     void timertick(void);
     void timerclick(void);
     void applayclick(bool);
+    void rtc_write_finished(void);
+    void timing_write_finished(void);
 };
 
 #endif // DIALOGCOUNTDOWNOUTPUT_H

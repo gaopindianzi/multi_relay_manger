@@ -14,6 +14,7 @@
 #include "rc4.h"
 #include "PasswordItemDef.h"
 #include "command_datatype.h"
+#include <QDateTime>
 
 #define  TCP_CMD_POWER_UP              0
 #define  TCP_CMD_IDLE                         1
@@ -36,6 +37,11 @@ public:
 signals:
     void DeviceInfoChanged(QString hostaddrID);
     void DeviceAckStatus(QString status);
+    //指令完成应答信号
+    void DeviceWriteTimingFinished(void);
+    void DevcieWriteRtcFinihed(void);
+    void DevcieReadTimingFinihed(void);
+    void DevcieReadIoNameFinihed(void);
 public slots:
     void InitDeviceAddress(QHostAddress & addr,quint16 port,QSharedPointer<QUdpSocket>  & psocket);
     int   SendRxData(QByteArray & data,QList<password_item> & pwdlist);
@@ -79,8 +85,9 @@ public:
     QBitArray   relay_bitmask;
     QSharedPointer<device_info_st> & GetDeviceInfo(void) { return pdev_info; }
     QVector<timing_node> & GetDeviceIoOutTimingList(void) { return io_out_timing_list; }
-    QTime ConvertOnceTimingNodeToQTime(timing_node & node);
-    int       GetDeviceTimeSecs(void);
+    void     SetDeviceIoOutTimingList(QVector<timing_node> & timinglist);
+    QDateTime ConvertTimeNodeToQDT(time_type & ttick);
+    QDateTime GetDeviceDateTime(void);
 private:
     void      SendCommandData(const char * buffer,int len);
 private:
@@ -134,14 +141,19 @@ private:  //TCP接口数据
     void TcpReReadIoInValue(void);
     void TcpAckReadIoInValue(QByteArray & buffer);
     //TCP写定时器数据
-
     void TcpReWriteIoOutTiming(void);
+    void TcpDoneWriteIoOutTiming(void);
     void TcpAckWriteIoOutTiming(QByteArray & buffer);
+    //TCP写RTC定时器
+    void TcpReStartWriteRtc(void);
+    void TcpDoneWriteRtc(void);
+    void TcpAckWriteRtc(QByteArray & buffer);
     //多余的东东
 public:
     void  TcpStartReadIoNames(void);
     void  TcpStartReadTimimgs(void);
     void  TcpStartWriteIoOutTiming(void);
+    void TcpStartWriteRtc(void);
 private slots:
     void	tcpconnected ();
     void	tcpdisconnected ();

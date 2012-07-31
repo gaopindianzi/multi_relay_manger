@@ -17,7 +17,9 @@
 #include <QTimeEdit>
 #include <QLabel>
 #include <QDate>
+#include <QDateTime>
 
+#include "waitfinisheddialog.h"
 
 
 QApplyPushbutton::QApplyPushbutton(RelayDeviceSharePonterType pdev,int index,QWidget *parent)
@@ -38,6 +40,8 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
     pdevice = pdev;
     //构建
 
+    connect(pdevice.data(),SIGNAL(DevcieWriteRtcFinihed()),this,SLOT(rtc_write_finished()));
+
     dialogtime = QTime::currentTime();
 
     //根据不同的路数，设定不同数量和模式的按钮
@@ -48,8 +52,7 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
 
 
     for(int i=0;i<ioout_num;i++) {
-        timing_node node;
-        memset(&node,0,sizeof(node));
+        timing_node node = {{0,0},0,{0,0,0,0,0,0},{0,0,0,0,0,0},0,0,0};
         count_down_timemap[i] = node;
     }
 
@@ -95,34 +98,21 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
             progressmap[i] = progbar;
             QTimeEdit * time = new QTimeEdit(parent);
             QTimeEdit * timenew = new QTimeEdit(parent);
+            timemap[i] = time;
+            timenewmap[i] = timenew;
             time->setReadOnly(true);
 
             {
                 //设置进度条，和剩余时间，和总时间
-                QTime base(0,0,0);
-                int formstart = secs_escape_form_start(i);
-                int formend = secs_escape_form_end(i);
-                int startend = secs_start_to_end(i);
+                QDateTime starttime = pdevice->ConvertTimeNodeToQDT(count_down_timemap[i].start_time);
+                QDateTime devicetime = pdevice->GetDeviceDateTime();
+                QDateTime endtime   = pdevice->ConvertTimeNodeToQDT(count_down_timemap[i].end_time);
 
-                qDebug("formstart=%d,formend=%d,startend=%d",formstart,formend,startend);
+                SetRemainTimeAndProgressBar(i,starttime,devicetime,endtime,1);
 
-                timenew->setTime(base.addSecs(startend));
-
-                progbar->setRange(0,100);
-                if(formstart > 0 && formend < 0) {
-                    time->setTime(base.addSecs(formend *(-1)));
-                    int persent = formend * -100 / startend;
-                    progbar->setValue(persent);
-                } else {
-                    //over time...
-                    time->setTime(base);
-                    progbar->setValue(0);
-                }
             }
 
 
-            timemap[i] = time;
-            timenewmap[i] = timenew;
 
             QApplyPushbutton * okbutton = new QApplyPushbutton(pdevice,i,parent);
             connect(okbutton,SIGNAL(clicked(bool)),this,SLOT(applayclick(bool)));
@@ -163,34 +153,26 @@ DialogCountdownOutput::~DialogCountdownOutput()
     delete ui;
 }
 
-int   get_seconds_form_timnode(time_type & node)
+void DialogCountdownOutput::SetAndWriteIoOutOnceTiming(int index,QDateTime & start,QDateTime & end)
 {
-    int  secs = 0;
-    secs = node.hour * 3600;
-    secs += node.min * 60;
-    secs += node.sec;
-    return secs;
-}
-
-void DialogCountdownOutput::SetAndWriteIoOutOnceTiming(int index,QTime & start,QTime & end)
-{
-    QDate date = QDate::currentDate();
-    timing_node node;
+    timing_node node = {{0,0},0,{0,0,0,0,0,0},{0,0,0,0,0,0},0,0,0};
     node.addr[1] = index / 256;
     node.addr[0] = index % 256;
-    node.start_time.year= date.year() - 1900;
-    node.start_time.mon = date.month() - 1;
-    node.start_time.day  = date.day();
-    node.start_time.hour = start.hour();
-    node.start_time.min = start.minute();
-    node.start_time.sec = start.second();
+    node.start_time.year= start.date().year() - 1900;
+    node.start_time.mon = start.date().month() - 1;
+    node.start_time.day  = start.date().day();
+    node.start_time.hour = start.time().hour();
+    node.start_time.min = start.time().minute();
+    node.start_time.sec = start.time().second();
 
-    node.end_time.year= date.year() - 1900;
-    node.end_time.mon = date.month() - 1;
-    node.end_time.day  = date.day();
-    node.end_time.hour = end.hour();
-    node.end_time.min = end.minute();
-    node.end_time.sec = end.second();
+    node.end_time.year= end.date().year() - 1900;
+    node.end_time.mon = end.date().month() - 1;
+    node.end_time.day  = end.date().day();
+    node.end_time.hour = end.time().hour();
+    node.end_time.min = end.time().minute();
+    node.end_time.sec = end.time().second();
+
+
 
 
     SET_IO_TIME_DONE(&node,0);
@@ -200,7 +182,23 @@ void DialogCountdownOutput::SetAndWriteIoOutOnceTiming(int index,QTime & start,Q
     count_down_timemap[index] = node;
 
     //生成定时器列表，输入到设备中
+    QVector<timing_node> timinglist;
+    for(int i=0;i<pdevice->GetIoOutNum();i++) {
+        timing_node node = count_down_timemap[i];
+        if(GET_IO_TIME_VALID(&node)) {
+            timinglist.push_back(node);
+        }
+    }
+    pdevice->SetDeviceIoOutTimingList(timinglist);
     //调用写定时器
+    pdevice->TcpStartWriteRtc();
+    //pdevice->TcpStartWriteIoOutTiming();
+
+    WaitFinishedDialog dlg;
+    dlg.setprogresstitle(tr("Is writing a timer, please wait......"));
+    connect(pdevice.data(),SIGNAL(DeviceWriteTimingFinished()),&dlg,SLOT(progressfinished()));
+    dlg.exec();
+
 }
 
 void DialogCountdownOutput::applayclick(bool)
@@ -209,55 +207,58 @@ void DialogCountdownOutput::applayclick(bool)
     int index = buttun->dev_index;
     qDebug("sender button = %d",index);
 
-    QTime time = timenewmap[index]->time();
+    QDateTime datetimebase = QDateTime::currentDateTime();
 
-    //app_info.setCountDownDefaultTime(index,time);
+    QTime tbase(0,0,0);
+    int secs = tbase.secsTo(timenewmap[index]->time());  //求得定时秒数
+    QDateTime enddt = datetimebase.addSecs(secs);
 
-    QTime base(0,0,0);
-    int secs = time.secsTo(base);
-
-    QTime curr = QTime::currentTime();
-
-    QTime start = curr;
-    QTime end = curr.addSecs(secs);
-
-    //构建设备结构
-    SetAndWriteIoOutOnceTiming(index,start,end);
+    SetAndWriteIoOutOnceTiming(index,datetimebase,enddt);
 
 }
 
-
-int   DialogCountdownOutput::secs_escape_form_start(int index)
+void DialogCountdownOutput::rtc_write_finished(void)
 {
-    int curr_secs = pdevice->GetDeviceTimeSecs();
-    timing_node node = count_down_timemap[index];
-    time_type    start = node.start_time;
-    return (curr_secs - get_seconds_form_timnode(start));
+    pdevice->TcpStartWriteIoOutTiming();
 }
-int   DialogCountdownOutput::secs_escape_form_end(int index)
+
+void DialogCountdownOutput::timing_write_finished(void)
 {
-    int curr_secs = pdevice->GetDeviceTimeSecs();
-    timing_node node = count_down_timemap[index];
-    time_type    end   = node.end_time;
-    return (curr_secs - get_seconds_form_timnode(end));
+    //不动作
 }
-int   DialogCountdownOutput::secs_start_to_end(int index)
+
+void DialogCountdownOutput::SetRemainTimeAndProgressBar(int index,QDateTime start,QDateTime current,QDateTime end,bool isfirstone)
 {
-    timing_node node = count_down_timemap[index];
-    time_type    start = node.start_time;
-    time_type    end   = node.end_time;
-    return (get_seconds_form_timnode(end) - get_seconds_form_timnode(start));
+    //设置进度条，和剩余时间，和总时间
+    QTime basetime(0,0,0);
+    int all_secs = start.secsTo(end);
+    if(isfirstone) {
+        timenewmap[index]->setTime(basetime.addSecs(all_secs));
+    }
+
+    int   start2now_secs = start.secsTo(current);
+    int   end2now_secs = end.secsTo(current);
+    //qDebug("start to end %d , start %d ,end %d",starttime.secsTo(endtime),start2now_secs,end2now_secs);
+    progressmap[index]->setRange(0,100);
+    if(start2now_secs > 0 && end2now_secs < 0) {
+        timemap[index]->setTime(basetime.addSecs(end2now_secs *(-1)));
+        int persent = end2now_secs * -100 / all_secs;
+        progressmap[index]->setValue(persent);
+    } else {
+        timemap[index]->setTime(basetime);
+        progressmap[index]->setValue(0);
+    }
 }
+
 
 void DialogCountdownOutput::timertick(void)
 {
-//     qDebug("time tick;");
      for(int i=0;i<timemap.size();i++) {
-        // QTimeEdit * time = timemap[i];
-        //// if(time->time() !=QTime(0,0,0)) {
-        //     QTime t = time->time().addSecs(-1);
-        //     time->setTime(t);
-         //}
+         //设置进度条，和剩余时间，和总时间
+         QDateTime starttime = pdevice->ConvertTimeNodeToQDT(count_down_timemap[i].start_time);
+         QDateTime currenttime = QDateTime::currentDateTime(); //pdevice->GetDeviceDateTime();
+         QDateTime endtime   = pdevice->ConvertTimeNodeToQDT(count_down_timemap[i].end_time);
+         SetRemainTimeAndProgressBar(i,starttime,currenttime,endtime);
      }
 }
 
