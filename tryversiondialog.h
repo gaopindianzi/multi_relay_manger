@@ -2,6 +2,7 @@
 #define TRYVERSIONDIALOG_H
 
 #include <QDialog>
+#include <QTimer>
 
 namespace Ui {
 class TryVersionDialog;
@@ -18,6 +19,10 @@ public:
     void setTryVersionString(QString title1,QString title2);
 private:
     Ui::TryVersionDialog *ui;
+    QTimer timer;
+    unsigned int  timeout_tick_count;
+private slots:
+    void timeout_tick(void);
 };
 
 #endif // TRYVERSIONDIALOG_H
