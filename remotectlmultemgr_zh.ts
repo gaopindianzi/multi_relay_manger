@@ -10,6 +10,54 @@
     </message>
 </context>
 <context>
+    <name>DialogCountdownOutput</name>
+    <message>
+        <location filename="dialogcountdownoutput.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished">对话框</translation>
+    </message>
+    <message>
+        <location filename="dialogcountdownoutput.ui" line="26"/>
+        <source>Countdown management</source>
+        <translation type="unfinished">倒计时管理</translation>
+    </message>
+    <message>
+        <location filename="Dialogcountdownoutput.cpp" line="79"/>
+        <source>The Name</source>
+        <translation type="unfinished">名字</translation>
+    </message>
+    <message>
+        <location filename="Dialogcountdownoutput.cpp" line="83"/>
+        <source>Countdown time remaining progress bar</source>
+        <translation type="unfinished">剩余时间进度条</translation>
+    </message>
+    <message>
+        <location filename="Dialogcountdownoutput.cpp" line="87"/>
+        <source>Time remaining</source>
+        <translation type="unfinished">剩余时间</translation>
+    </message>
+    <message>
+        <location filename="Dialogcountdownoutput.cpp" line="91"/>
+        <source>Total time</source>
+        <translation type="unfinished">总时间</translation>
+    </message>
+    <message>
+        <location filename="Dialogcountdownoutput.cpp" line="95"/>
+        <source>Reset operation</source>
+        <translation type="unfinished">重设倒计时</translation>
+    </message>
+    <message>
+        <location filename="Dialogcountdownoutput.cpp" line="134"/>
+        <source>Apply</source>
+        <translation type="unfinished">重设</translation>
+    </message>
+    <message>
+        <location filename="Dialogcountdownoutput.cpp" line="210"/>
+        <source>Is writing a timer, please wait......</source>
+        <translation type="unfinished">正在写定时和名字，请稍等...</translation>
+    </message>
+</context>
+<context>
     <name>EditParamDialog</name>
     <message>
         <location filename="editparamdialog.ui" line="26"/>
@@ -137,188 +185,217 @@
     <name>MainWindow</name>
     <message>
         <location filename="mainwindow.ui" line="20"/>
-        <location filename="mainwindow.cpp" line="137"/>
+        <location filename="mainwindow.cpp" line="155"/>
         <source>Remote multiple device manger</source>
         <translation type="unfinished">远程设备多管理控制终端</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="139"/>
+        <location filename="mainwindow.cpp" line="157"/>
         <source>Ready</source>
         <translation type="unfinished">准备就绪</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="160"/>
+        <location filename="mainwindow.cpp" line="178"/>
+        <location filename="mainwindow.cpp" line="184"/>
+        <source>Warning</source>
+        <translation type="unfinished">注意</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="179"/>
+        <source>This is beta version software, 
+and for genuine version please contact:</source>
+        <translation type="unfinished">这是试用版软件，如需正版，请与本公司联系：</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="179"/>
+        <location filename="mainwindow.cpp" line="185"/>
+        <source>ShenZhen Jingruida Network Technology Co., Ltd.</source>
+        <translation type="unfinished">深圳市精锐达网络技术有限公司</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="185"/>
+        <source>This is beta version software, 
+the system will quit.</source>
+        <translation type="unfinished">这是试用版软件，系统将退出运行。</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="214"/>
         <source>Status:</source>
         <translation type="unfinished">状态：</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="165"/>
+        <location filename="mainwindow.cpp" line="219"/>
         <source>&amp;Quit</source>
         <translation type="unfinished">退出</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="168"/>
+        <location filename="mainwindow.cpp" line="222"/>
+        <source>ItemViewSetting...</source>
+        <translation type="unfinished">视图设定...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="225"/>
         <source>&amp;Edit device parameter...</source>
         <translation type="unfinished">设备参数...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="171"/>
+        <location filename="mainwindow.cpp" line="228"/>
         <source>&amp;Clear all device</source>
         <translation type="unfinished">清除所有设备</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="174"/>
+        <location filename="mainwindow.cpp" line="231"/>
         <source>&amp;Change deivce ip config...</source>
         <translation type="unfinished">设备IP地址...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="177"/>
+        <location filename="mainwindow.cpp" line="234"/>
         <source>&amp;Communication password...</source>
         <translation type="unfinished">通信密码...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="180"/>
+        <location filename="mainwindow.cpp" line="237"/>
         <source>&amp;Selected all device</source>
         <translation type="unfinished">选择所有设备</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="182"/>
+        <location filename="mainwindow.cpp" line="239"/>
         <source>&amp;Deselected all device</source>
         <translation type="unfinished">取消选择所有设备</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="185"/>
+        <location filename="mainwindow.cpp" line="242"/>
         <source>&amp;Set all selected device output ON</source>
         <translation type="unfinished">打开所有选择的设备</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="187"/>
+        <location filename="mainwindow.cpp" line="244"/>
         <source>&amp;Set all selected device output OFF</source>
         <translation type="unfinished">关闭所有选择的设备</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="190"/>
+        <location filename="mainwindow.cpp" line="247"/>
         <source>Chinese</source>
         <translation type="unfinished">中文</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="193"/>
+        <location filename="mainwindow.cpp" line="250"/>
         <source>About</source>
         <translation type="unfinished">关于</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="198"/>
+        <location filename="mainwindow.cpp" line="255"/>
         <source>Mi&amp;nimize</source>
         <translation type="unfinished">最小化</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="201"/>
+        <location filename="mainwindow.cpp" line="258"/>
         <source>Ma&amp;ximize</source>
         <translation type="unfinished">最大化</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="204"/>
+        <location filename="mainwindow.cpp" line="261"/>
         <source>&amp;Restore</source>
         <translation type="unfinished">还原</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="257"/>
+        <location filename="mainwindow.cpp" line="322"/>
         <source>Note!</source>
         <translation type="unfinished">注意！</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="257"/>
+        <location filename="mainwindow.cpp" line="322"/>
         <source>The program will keep running.</source>
         <translation type="unfinished">程序保持运行...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="274"/>
+        <location filename="mainwindow.cpp" line="338"/>
         <source>&amp;File</source>
         <translation type="unfinished">文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="276"/>
+        <location filename="mainwindow.cpp" line="342"/>
         <source>&amp;Tools</source>
         <translation type="unfinished">工具</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="286"/>
+        <location filename="mainwindow.cpp" line="352"/>
         <source>&amp;Operation</source>
         <translation type="unfinished">操作</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="291"/>
+        <location filename="mainwindow.cpp" line="357"/>
         <source>Help</source>
         <translation type="unfinished">帮助</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="432"/>
-        <location filename="mainwindow.cpp" line="621"/>
+        <location filename="mainwindow.cpp" line="498"/>
+        <location filename="mainwindow.cpp" line="706"/>
         <source>DeviceTable</source>
         <translation type="unfinished">设备列表</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>S</source>
         <translation type="unfinished">选择</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>DeviceName</source>
         <translation type="unfinished">设备名称</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>IpAddr</source>
         <translation type="unfinished">IP地址</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>Group1</source>
         <translation type="unfinished">分组1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>Group2</source>
         <translation type="unfinished">分组2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>Control</source>
         <translation type="unfinished">控制</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>AllOn</source>
         <translation type="unfinished">全开</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>AllOff</source>
         <translation type="unfinished">全关</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="450"/>
+        <location filename="mainwindow.cpp" line="520"/>
         <source>Status</source>
         <translation type="unfinished">状态</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="452"/>
+        <location filename="mainwindow.cpp" line="522"/>
         <source>DeviceTime</source>
         <translation type="unfinished">设备时间</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="622"/>
+        <location filename="mainwindow.cpp" line="707"/>
         <source>Exit</source>
         <translation type="unfinished">退出</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="623"/>
+        <location filename="mainwindow.cpp" line="708"/>
         <source>Edit Device Parameter...</source>
         <translation type="unfinished">设备参数...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="624"/>
+        <location filename="mainwindow.cpp" line="709"/>
         <source>Edit Ip Config...</source>
         <translation type="unfinished">IP配置...</translation>
     </message>
@@ -326,9 +403,14 @@
 <context>
     <name>QDeviceControlWidget</name>
     <message>
-        <location filename="mainwindow.cpp" line="33"/>
+        <location filename="mainwindow.cpp" line="37"/>
         <source>&amp;IoExpendSetting...</source>
         <translation type="unfinished">控制面板</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="39"/>
+        <source>Count Down Manger...</source>
+        <translation type="unfinished">倒计时管理...</translation>
     </message>
 </context>
 <context>
@@ -561,154 +643,206 @@ do you replace the exist password item?</source>
 <context>
     <name>QRelayDeviceControl</name>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="56"/>
+        <location filename="QRelayDeviceControl.cpp" line="57"/>
         <source>none</source>
         <translation type="unfinished">  </translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="65"/>
+        <location filename="QRelayDeviceControl.cpp" line="66"/>
         <source>none.</source>
         <translation type="unfinished">none</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="77"/>
+        <location filename="QRelayDeviceControl.cpp" line="78"/>
         <source>idle</source>
         <translation type="unfinished">空闲</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="82"/>
+        <location filename="QRelayDeviceControl.cpp" line="83"/>
         <source>wait line ok...</source>
         <translation type="unfinished">等待连接正常...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="126"/>
+        <location filename="QRelayDeviceControl.cpp" line="157"/>
         <source>tcp connecting to the device...</source>
         <translation type="unfinished">TCP正在连接到设备...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="131"/>
+        <location filename="QRelayDeviceControl.cpp" line="162"/>
         <source>tcp waiting line ok...</source>
         <translation type="unfinished">TCP等待线路正常...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="152"/>
+        <location filename="QRelayDeviceControl.cpp" line="187"/>
         <source>sending command timeout,try to wait again...</source>
         <translation type="unfinished">发送命令超时，重试...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="155"/>
+        <location filename="QRelayDeviceControl.cpp" line="190"/>
         <source>sending command timeout,close the tcp connect and wait sometime...</source>
         <translation type="unfinished">发送命令超时，关闭TCP连接，等待尝试...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="163"/>
+        <location filename="QRelayDeviceControl.cpp" line="204"/>
         <source>continue wait command ack...</source>
         <translation type="unfinished">继续等待命令应答...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="195"/>
+        <location filename="QRelayDeviceControl.cpp" line="235"/>
+        <source>start reading io In values...</source>
+        <translation type="unfinished">开始读IO输入口...</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="251"/>
+        <source>finished reading io in values.</source>
+        <translation type="unfinished">IO输入口读取完成。</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="275"/>
+        <location filename="QRelayDeviceControl.cpp" line="345"/>
         <source>start reading io names...</source>
         <translation type="unfinished">开始读IO名字...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="211"/>
+        <location filename="QRelayDeviceControl.cpp" line="291"/>
         <source>continue reading io names...</source>
         <translation type="unfinished">继续读IO名字...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="232"/>
+        <location filename="QRelayDeviceControl.cpp" line="312"/>
         <source>finished reading io names...</source>
         <translation type="unfinished">完成读IO名字...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="258"/>
+        <location filename="QRelayDeviceControl.cpp" line="368"/>
+        <source>finished write io name...</source>
+        <translation type="unfinished">写IO端口名字完成。</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="390"/>
         <source>start reading io timings...</source>
         <translation type="unfinished">开始读定时...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="274"/>
+        <location filename="QRelayDeviceControl.cpp" line="406"/>
         <source>continue reading io timings...</source>
         <translation type="unfinished">继续读定时...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="317"/>
+        <location filename="QRelayDeviceControl.cpp" line="449"/>
         <source>finished reading io timings.</source>
         <translation type="unfinished">完成读定时...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="330"/>
+        <location filename="QRelayDeviceControl.cpp" line="480"/>
+        <location filename="QRelayDeviceControl.cpp" line="501"/>
+        <source>restart writing io timings...</source>
+        <translation type="unfinished">重写写定时...</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="514"/>
+        <source>send done writing io timings...</source>
+        <translation type="unfinished">正在完成写定时...</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="534"/>
+        <source>done writing io timings!</source>
+        <translation type="unfinished">完成写定时!</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="573"/>
+        <source>Start writing new rtc value...</source>
+        <translation type="unfinished">开始更新实时时钟......</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="597"/>
+        <source>Restart write new rtc value...</source>
+        <translation type="unfinished">重新更实时时钟...</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="611"/>
+        <source>Done write new rtc value.</source>
+        <translation type="unfinished">完成写实时时钟。</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="637"/>
+        <source>done writing rtc value.</source>
+        <translation type="unfinished">完成写实时时钟。</translation>
+    </message>
+    <message>
+        <location filename="QRelayDeviceControl.cpp" line="656"/>
         <source>On Line</source>
         <translation type="unfinished">在线</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="335"/>
+        <location filename="QRelayDeviceControl.cpp" line="661"/>
         <source>Off Line</source>
         <translation type="unfinished">离线</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="429"/>
+        <location filename="QRelayDeviceControl.cpp" line="755"/>
         <source>sending set device name command...</source>
         <translation type="unfinished">发送修改设备名命令中...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="452"/>
-        <location filename="QRelayDeviceControl.cpp" line="475"/>
+        <location filename="QRelayDeviceControl.cpp" line="778"/>
+        <location filename="QRelayDeviceControl.cpp" line="801"/>
         <source>sending set device group command...</source>
         <translation type="unfinished">发送修改设备组名命令中...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="492"/>
+        <location filename="QRelayDeviceControl.cpp" line="818"/>
         <source>start writing new device infamation command...</source>
         <translation type="unfinished">往设备写新的设备信息...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="511"/>
+        <location filename="QRelayDeviceControl.cpp" line="837"/>
         <source>Reset device...</source>
         <translation type="unfinished">复位设备中...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="560"/>
-        <location filename="QRelayDeviceControl.cpp" line="696"/>
+        <location filename="QRelayDeviceControl.cpp" line="886"/>
+        <location filename="QRelayDeviceControl.cpp" line="1022"/>
         <source>set io out bits...</source>
         <translation type="unfinished">设置IO输出位...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="741"/>
+        <location filename="QRelayDeviceControl.cpp" line="1067"/>
         <source>2 ch dig input,2 ch relay output.</source>
         <translation type="unfinished">2路继电器输出控制卡.</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="742"/>
+        <location filename="QRelayDeviceControl.cpp" line="1068"/>
         <source>4 ch dig input,4 ch relay output.</source>
         <translation type="unfinished">4路继电器输出控制卡.</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="743"/>
+        <location filename="QRelayDeviceControl.cpp" line="1069"/>
         <source>8 ch dig input,8 ch relay output.</source>
         <translation type="unfinished">8继电器输出控制卡.</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="744"/>
+        <location filename="QRelayDeviceControl.cpp" line="1070"/>
         <source>16 ch relay output.</source>
         <translation type="unfinished">16路继电器输出控制卡.</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="745"/>
+        <location filename="QRelayDeviceControl.cpp" line="1071"/>
         <source>16 ch remote host reseter.</source>
         <translation type="unfinished">16路继电器输出控制卡，服务器专用</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="891"/>
+        <location filename="QRelayDeviceControl.cpp" line="1217"/>
         <source>Reseting...</source>
         <translation type="unfinished">正在复位...</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="961"/>
+        <location filename="QRelayDeviceControl.cpp" line="1287"/>
         <source>device(</source>
         <translation type="unfinished">设备(</translation>
     </message>
     <message>
-        <location filename="QRelayDeviceControl.cpp" line="961"/>
+        <location filename="QRelayDeviceControl.cpp" line="1287"/>
         <source>) infomation is updated.</source>
         <translation type="unfinished">)信息已更新.</translation>
     </message>
@@ -727,6 +861,42 @@ do you replace the exist password item?</source>
         <location filename="QOnOffPushButton.cpp" line="79"/>
         <source>SetON</source>
         <translation type="unfinished">打开</translation>
+    </message>
+</context>
+<context>
+    <name>WaitFinishedDialog</name>
+    <message>
+        <location filename="waitfinisheddialog.ui" line="26"/>
+        <source>Dialog</source>
+        <translation type="unfinished">对话框</translation>
+    </message>
+    <message>
+        <location filename="waitfinisheddialog.ui" line="51"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="waitfinisheddialog.cpp" line="15"/>
+        <source>wait finished dialog</source>
+        <translation type="unfinished">等待完成对话框</translation>
+    </message>
+    <message>
+        <location filename="waitfinisheddialog.cpp" line="36"/>
+        <source>Write device may fail, try again!!!</source>
+        <translation type="unfinished">写数据时间过长，可能出错。</translation>
+    </message>
+</context>
+<context>
+    <name>view_items_select</name>
+    <message>
+        <location filename="view_items_select.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished">对话框</translation>
+    </message>
+    <message>
+        <location filename="view_items_select.ui" line="46"/>
+        <source>OK</source>
+        <translation type="unfinished">确定</translation>
     </message>
 </context>
 </TS>

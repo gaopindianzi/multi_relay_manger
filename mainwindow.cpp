@@ -175,11 +175,13 @@ void MainWindow::try_timer_slot(void)
             --try_version_count_times;
             if(try_version_count_times ) {
                 TryVersionDialog dlg;
+                dlg.setWindowTitle(tr("Warning"));
                 dlg.setTryVersionString(tr("This is beta version software, \nand for genuine version please contact:"),tr("ShenZhen Jingruida Network Technology Co., Ltd."));
                 dlg.exec();
                 try_version_count = try_version_count_times * 10;
             } else {
                 TryVersionDialog dlg;
+                dlg.setWindowTitle(tr("Warning"));
                 dlg.setTryVersionString(tr("This is beta version software, \nthe system will quit."),tr("ShenZhen Jingruida Network Technology Co., Ltd."));
                 dlg.exec();
                 qApp->quit();
