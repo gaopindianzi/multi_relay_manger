@@ -41,11 +41,22 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
     //构建
 
     connect(pdevice.data(),SIGNAL(DevcieWriteRtcFinihed()),this,SLOT(rtc_write_finished()));
+    connect(pdevice.data(),SIGNAL(DeviceWriteTimingFinished()),this,SLOT(timing_write_finished()));
+    connect(pdevice.data(),SIGNAL(DeviceWriteIoNameFinished(int,QString)),
+            this,SLOT(ioname_write_finished(int,QString)));
 
     dialogtime = QTime::currentTime();
 
     //根据不同的路数，设定不同数量和模式的按钮
     int ioout_num = pdev->GetIoOutNum();
+
+
+
+    this->setFixedHeight(40+(ioout_num * 34 + 22));  //定参数外框+IO数量高度    
+    this->ui->groupBox->setFixedHeight(15+(ioout_num * 34 + 22));
+    this->setFixedWidth(730);
+    this->ui->groupBox->setFixedWidth(715);
+
 
     //初始化定时器序列
     QVector<timing_node> & timlist = pdev->GetDeviceIoOutTimingList();
@@ -65,23 +76,23 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
     }
 
     QHBoxLayout * linelayout = new QHBoxLayout();
-    QLineEdit * labelname = new QLineEdit(tr("name"),parent);
+    QLabel * labelname = new QLabel(tr("The Name"),parent);
     labelname->setFixedWidth(100);
     linelayout->addWidget(labelname);
     linelayout->addSpacing(6);
-    QLineEdit * labelpragressbar = new QLineEdit(tr("The remainder of the progress bar"),parent);
+    QLabel * labelpragressbar = new QLabel(tr("Countdown time remaining progress bar"),parent);
     labelpragressbar->setFixedWidth(271);
     linelayout->addWidget(labelpragressbar);
     linelayout->addSpacing(35);
-    QLineEdit * labelesace = new QLineEdit(tr("Remaining"),parent);
+    QLabel * labelesace = new QLabel(tr("Time remaining"),parent);
     labelesace->setFixedWidth(84);
     linelayout->addWidget(labelesace);
     linelayout->addSpacing(6);
-    QLineEdit * labelnewtime = new QLineEdit(tr("New Time"),parent);
+    QLabel * labelnewtime = new QLabel(tr("Total time"),parent);
     labelnewtime->setFixedWidth(84);
     linelayout->addWidget(labelnewtime);
     linelayout->addSpacing(7);
-    QLineEdit * labelappaybutton = new QLineEdit(tr("Operation"),parent);
+    QLabel * labelappaybutton = new QLabel(tr("Reset operation"),parent);
     labelappaybutton->setFixedWidth(73);
     linelayout->addWidget(labelappaybutton);
     linelayout->addStretch();
@@ -93,6 +104,7 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
         for(i=0;i<ioout_num;i++) {
             QHBoxLayout * linelayout = new QHBoxLayout();
             QLineEdit * name = new QLineEdit(parent);
+            namemap[i] = name;
             QProgressBar * progbar = new QProgressBar(parent);
             progbar->setFixedWidth(300);
             progressmap[i] = progbar;
@@ -196,7 +208,7 @@ void DialogCountdownOutput::SetAndWriteIoOutOnceTiming(int index,QDateTime & sta
 
     WaitFinishedDialog dlg;
     dlg.setprogresstitle(tr("Is writing a timer, please wait......"));
-    connect(pdevice.data(),SIGNAL(DeviceWriteTimingFinished()),&dlg,SLOT(progressfinished()));
+    connect(this,SIGNAL(write_some_data_finished()),&dlg,SLOT(progressfinished()));
     dlg.exec();
 
 }
@@ -213,6 +225,9 @@ void DialogCountdownOutput::applayclick(bool)
     int secs = tbase.secsTo(timenewmap[index]->time());  //求得定时秒数
     QDateTime enddt = datetimebase.addSecs(secs);
 
+    index_name_change = index;
+    index_name_string = namemap[index]->text();
+
     SetAndWriteIoOutOnceTiming(index,datetimebase,enddt);
 
 }
@@ -224,7 +239,19 @@ void DialogCountdownOutput::rtc_write_finished(void)
 
 void DialogCountdownOutput::timing_write_finished(void)
 {
-    //不动作
+    unsigned char addr[2];
+    addr[0] = index_name_change & 0xFF;
+    addr[1] = index_name_change >> 8;
+    pdevice->TcpWriteIoName(addr,index_name_string);
+}
+
+void DialogCountdownOutput::ioname_write_finished(int index,QString name)
+{
+    QString devicename = pdevice->GetDeviceIoOutName(index);
+    if(index < pdevice->GetIoOutNum()) {
+        namemap[index]->setText(devicename);
+    }
+    emit write_some_data_finished();
 }
 
 void DialogCountdownOutput::SetRemainTimeAndProgressBar(int index,QDateTime start,QDateTime current,QDateTime end,bool isfirstone)
@@ -238,7 +265,7 @@ void DialogCountdownOutput::SetRemainTimeAndProgressBar(int index,QDateTime star
 
     int   start2now_secs = start.secsTo(current);
     int   end2now_secs = end.secsTo(current);
-    //qDebug("start to end %d , start %d ,end %d",starttime.secsTo(endtime),start2now_secs,end2now_secs);
+    //qDebug("%d:start to end %d , start %d ,end %d",index,start.secsTo(end),start2now_secs,end2now_secs);
     progressmap[index]->setRange(0,100);
     if(start2now_secs > 0 && end2now_secs < 0) {
         timemap[index]->setTime(basetime.addSecs(end2now_secs *(-1)));
@@ -253,6 +280,7 @@ void DialogCountdownOutput::SetRemainTimeAndProgressBar(int index,QDateTime star
 
 void DialogCountdownOutput::timertick(void)
 {
+
      for(int i=0;i<timemap.size();i++) {
          //设置进度条，和剩余时间，和总时间
          QDateTime starttime = pdevice->ConvertTimeNodeToQDT(count_down_timemap[i].start_time);
@@ -260,6 +288,7 @@ void DialogCountdownOutput::timertick(void)
          QDateTime endtime   = pdevice->ConvertTimeNodeToQDT(count_down_timemap[i].end_time);
          SetRemainTimeAndProgressBar(i,starttime,currenttime,endtime);
      }
+
 }
 
 void DialogCountdownOutput::timerclick(void)

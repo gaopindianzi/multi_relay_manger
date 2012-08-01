@@ -40,6 +40,8 @@ public:
     ~DialogCountdownOutput();
 public:
     void SetAndWriteIoOutOnceTiming(int index,QDateTime & start,QDateTime & end);
+signals:
+    void write_some_data_finished(void);
 private:
     void SetRemainTimeAndProgressBar(int index,QDateTime start,QDateTime current,QDateTime end,bool isfirstone = 0);
 private:
@@ -48,6 +50,7 @@ private:
     RelayDeviceSharePonterType pdevice;
 
     QTimer * timer;
+    QMap<int,QLineEdit *>       namemap;
     QMap<int,QTimeEdit *>      timemap;
     QMap<int,QTimeEdit *>      timenewmap;
     QMap<int,QProgressBar *> progressmap;
@@ -55,12 +58,15 @@ private:
     QMap<int,timing_node>      count_down_timemap;
     //
     QTime                                dialogtime;  //打开对话框的时候的时间，用于倒计时显示
+    unsigned int                       index_name_change;
+    QString                              index_name_string;
 private slots:
     void timertick(void);
     void timerclick(void);
     void applayclick(bool);
     void rtc_write_finished(void);
     void timing_write_finished(void);
+    void ioname_write_finished(int index,QString name);
 };
 
 #endif // DIALOGCOUNTDOWNOUTPUT_H

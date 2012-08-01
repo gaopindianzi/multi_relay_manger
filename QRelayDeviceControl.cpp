@@ -136,6 +136,11 @@ void	QRelayDeviceControl::tcpreadyRead ()
             TcpAckWriteRtc(arry);
         }
         break;
+        case CMD_SET_IO_NAME:
+        {
+            TcpAckWriteIoName(arry);
+        }
+        break;
         default:
             break;
         }
@@ -310,10 +315,61 @@ void  QRelayDeviceControl::TcpAckIoNames(QByteArray & buffer)
         //继续读名字
         TcpReadIoNames();
     }
+    tcp_ack_timeout_count = 0;
+}
+
+void QRelayDeviceControl::TcpWriteIoName(unsigned char addr[2],QString name)
+{
+    QByteArray data;
 
     tcp_ack_timeout_count = 0;
 
+    data.resize(sizeof(CmdHead) + sizeof(CmdIoName));
+    CmdHead  * pcmd = (CmdHead *)data.data_ptr()->data;
+    CmdIoName * pio = (CmdIoName *)GET_CMD_DATA(pcmd);
+    pcmd->cmd = tcp_cmd_number = CMD_SET_IO_NAME;
+    pcmd->cmd_index = ++cmd_index;
+    pcmd->cmd_len = sizeof(CmdIoName);
+    pcmd->cmd_option = 0;
+    //
+    pio->io_addr[0] = addr[0];
+    pio->io_addr[1] = addr[1];
+    const char * pstr = name.toAscii().data();
+    char str[20];
+    int len = strlen(pstr);
+    len = (len>=19)?19:len;
+    memcpy(str,pstr,len);
+    str[len] = 0;
+    memcpy((char *)&pio->io_name[0],str,20);
+    //
+    SetTcpSysStatus(TCP_CMD_WAIT_ACK,tr("start reading io names..."));
+    this->tcp_socket.write(data.data(),data.size());
 }
+
+void QRelayDeviceControl::TcpAckWriteIoName(QByteArray & buffer)
+{
+    CmdHead  * pcmd = (CmdHead *)buffer.data_ptr()->data;
+    CmdIoName * pio = (CmdIoName *)GET_CMD_DATA(pcmd);
+    //更新某路的名字
+    QString aryname(QString::fromLocal8Bit((const char *)pio->io_name));
+    debuginfo(("write back io name:%s",aryname.toAscii().data()));
+
+
+    int adindex = pio->io_addr[1];
+    adindex <<= 8;
+    adindex += pio->io_addr[0];
+    io_out_names.resize(this->GetIoOutNum());
+    if(adindex < this->GetIoOutNum()) {
+        io_out_names[adindex] = aryname;
+    }
+
+    //qDebug("ack write name index=%d",adindex);
+
+    SetTcpSysStatus(TCP_CMD_IDLE,tr("finished write io name..."));
+    emit DeviceWriteIoNameFinished(adindex,aryname);
+}
+
+
 
 void  QRelayDeviceControl::TcpStartReadTimimgs(void)
 {

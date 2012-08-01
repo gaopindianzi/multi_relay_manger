@@ -8,9 +8,9 @@ WaitFinishedDialog::WaitFinishedDialog(QWidget *parent) :
     ui->setupUi(this);
 
     connect(&timer,SIGNAL(timeout()),this,SLOT(timetick()));
-    setprogressticks(50);
+    setprogressticks(60);
 
-    timer.start(20);
+    timer.start(50);
 
     this->setWindowTitle(tr("wait finished dialog"));
 }
@@ -33,6 +33,7 @@ void WaitFinishedDialog::timetick(void)
     if(ticks > 0) {
         if(--ticks == 0) {
             //Ê§°Ü
+            ui->label->setText(tr("Write device may fail, try again!!!"));
         }
     }
     ui->progressBar->setValue(ticks_all - ticks);
@@ -45,7 +46,9 @@ void WaitFinishedDialog::progresstick(void)
 
 void WaitFinishedDialog::progressfinished(void)
 {
-    close();
+    if(ticks > 0) {
+        close();
+    }
 }
 
 void WaitFinishedDialog::setprogresstitle(QString title)

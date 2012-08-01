@@ -41,14 +41,13 @@ QDeviceControlWidget::QDeviceControlWidget(QWidget * parent)
 
 void QDeviceControlWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-    debuginfo(("at context event."));
     const QPoint & pos = event->pos();
     QTableWidgetItem * item = this->itemAt(pos);
     if(item) {
         QVariant var = item->data(0);
        RelayDeviceSharePonterType pdev = qVariantValue<RelayDeviceSharePonterType>(var);
         if(pdev) {
-            debuginfo(("item is exist: item type:(%d,%d)%s",item->row(),item->column(),pdev->GetDeviceName().toAscii().data()));
+            //debuginfo(("item is exist: item type:(%d,%d)%s",item->row(),item->column(),pdev->GetDeviceName().toAscii().data()));
             QMenu menu(this);
             setIoExternSetAction->setData(var);
             menu.addAction(setIoExternSetAction);
@@ -281,13 +280,11 @@ void MainWindow::changeEvent(QEvent * event )
 
 void MainWindow::showEvent ( QShowEvent * event )
 {
-    debuginfo(("show event ."));
     setVisible(true);
 }
 
 void MainWindow::hideEvent ( QHideEvent * event )
 {
-    debuginfo(("hide event"));
 }
 void MainWindow::closeEvent(QCloseEvent *event)
 {
@@ -301,7 +298,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::setVisible(bool visible)
 {
-     debuginfo(("set visible..."));
     minimizeAction->setEnabled(visible);
     maximizeAction->setEnabled(!isMaximized());
     restoreAction->setEnabled(isMaximized() || !visible);

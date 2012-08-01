@@ -42,6 +42,7 @@ signals:
     void DevcieWriteRtcFinihed(void);
     void DevcieReadTimingFinihed(void);
     void DevcieReadIoNameFinihed(void);
+    void DeviceWriteIoNameFinished(int index,QString name);
 public slots:
     void InitDeviceAddress(QHostAddress & addr,quint16 port,QSharedPointer<QUdpSocket>  & psocket);
     int   SendRxData(QByteArray & data,QList<password_item> & pwdlist);
@@ -148,16 +149,19 @@ private:  //TCP接口数据
     void TcpReStartWriteRtc(void);
     void TcpDoneWriteRtc(void);
     void TcpAckWriteRtc(QByteArray & buffer);
+    //写IO口名字
+    void TcpAckWriteIoName(QByteArray & buffer);
     //多余的东东
 public:
-    void  TcpStartReadIoNames(void);
-    void  TcpStartReadTimimgs(void);
-    void  TcpStartWriteIoOutTiming(void);
+    void TcpStartReadIoNames(void);
+    void TcpWriteIoName(unsigned char addr[2],QString name);
+    void TcpStartReadTimimgs(void);
+    void TcpStartWriteIoOutTiming(void);
     void TcpStartWriteRtc(void);
 private slots:
-    void	tcpconnected ();
-    void	tcpdisconnected ();
-    void	tcpreadyRead ();
+    void tcpconnected ();
+    void tcpdisconnected ();
+    void tcpreadyRead ();
     void tcp_timer();
 public:
     bool       is_checked;
