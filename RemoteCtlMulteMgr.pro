@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     view_items_select.cpp \
     appinfo.cpp \
     Dialogcountdownoutput.cpp \
-    waitfinisheddialog.cpp
+    waitfinisheddialog.cpp \
+    tryversiondialog.cpp
 
 HEADERS  += mainwindow.h \
     debug.h \
@@ -56,7 +57,8 @@ HEADERS  += mainwindow.h \
     view_items_select.h \
     appinfo.h \
     Dialogcountdownoutput.h \
-    waitfinisheddialog.h
+    waitfinisheddialog.h \
+    tryversiondialog.h
 
 FORMS    += mainwindow.ui \
     editparamdialog.ui \
@@ -66,7 +68,8 @@ FORMS    += mainwindow.ui \
     AboutDialog.ui \
     view_items_select.ui \
     dialogcountdownoutput.ui \
-    waitfinisheddialog.ui
+    waitfinisheddialog.ui \
+    tryversiondialog.ui
 
 RC_FILE = myapp.rc
 

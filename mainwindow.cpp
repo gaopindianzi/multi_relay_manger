@@ -18,6 +18,7 @@
 #include <QThread>
 #include <QFile>
 #include "dialogcountdownoutput.h"
+#include "tryversiondialog.h"
 
 
 #include "debug.h"
@@ -159,6 +160,32 @@ MainWindow::MainWindow(QWidget *parent) :
         InitUdpSocket();
 
         resize(app_info.app_with,app_info.app_height);
+
+        try_version_count = 20;
+        try_version_count_times = 4;
+        try_version_timer.start(1000);
+        connect(&try_version_timer,SIGNAL(timeout()),this,SLOT(try_timer_slot()));
+}
+
+void MainWindow::try_timer_slot(void)
+{
+    if(try_version_count) {
+        --try_version_count;
+        if(try_version_count == 0) {
+            --try_version_count_times;
+            if(try_version_count_times ) {
+                TryVersionDialog dlg;
+                dlg.setTryVersionString(tr("This is beta version software, \nand for genuine version please contact:"),tr("ShenZhen Jingruida Network Technology Co., Ltd."));
+                dlg.exec();
+                try_version_count = try_version_count_times * 10;
+            } else {
+                TryVersionDialog dlg;
+                dlg.setTryVersionString(tr("This is beta version software, \nthe system will quit."),tr("ShenZhen Jingruida Network Technology Co., Ltd."));
+                dlg.exec();
+                qApp->quit();
+            }
+        }
+    }
 }
 
 MainWindow::~MainWindow()

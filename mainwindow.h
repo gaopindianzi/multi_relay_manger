@@ -135,6 +135,13 @@ private:
 
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
+
+private:
+    unsigned long    try_version_count;
+    unsigned long    try_version_count_times;
+    QTimer              try_version_timer;
+private slots:
+    void try_timer_slot(void);
 };
 
 #endif // MAINWINDOW_H
