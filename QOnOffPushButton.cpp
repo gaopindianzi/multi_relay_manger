@@ -145,6 +145,7 @@ QRelayValueSingalChannalButton::QRelayValueSingalChannalButton(RelayDeviceShareP
     relay_bitmap = 0;
     pdevice = pdev;
     this->setText("");
+    //connect(pdevice.data(),SIGNAL(DeviceWriteOneTimingFinished()),this,SLOT(OneTimingWriteFinished()));
 }
 
 void QRelayValueSingalChannalButton::paintEvent ( QPaintEvent * event )
@@ -182,16 +183,30 @@ int QRelayValueSingalChannalButton::mouseAtButtonPosition(int x)
 
 void QRelayValueSingalChannalButton::mousePressEvent ( QMouseEvent * event )
 {
-    if(event->button()&Qt::LeftButton) {
+    if(event->button()&Qt::LeftButton && pdevice->io_timing_initialized) {
         int pos = event->x();
         int x = mouseAtButtonPosition(pos);
         if(x >= 0 && x < 32) relay_bitmap ^= (1<<x);
         //发送指令，翻转这个位
-        pdevice->ConvertIoOutOneBitAndSendCmd(x);
+
+        click_x = x;
+
+        pdevice->TcpWriteOneTiming(x,!pdevice->relay_bitmask[x]);
+
+
         this->update();
     }
 }
 
+void QRelayValueSingalChannalButton::OneTimingWriteFinished(void)
+{
+    debuginfo(("one timing finished signal..."));
+    pdevice->ConvertIoOutOneBitAndSendCmd(click_x);
+}
+
+void QRelayValueSingalChannalButton::OneIoOutSetFinished(void)
+{
+}
 
 QRelayValueSingalChannalButtonDelegate::QRelayValueSingalChannalButtonDelegate(QObject *parent)
     : CDeviceDelegate(parent)

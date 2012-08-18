@@ -80,6 +80,9 @@ class QRelayValueSingalChannalButton : public QPushButton
     Q_OBJECT
 public:
     QRelayValueSingalChannalButton(RelayDeviceSharePonterType pdev,QWidget * parent = 0 );
+private slots:
+    void OneTimingWriteFinished(void);
+    void OneIoOutSetFinished(void);
 private:
     void paintEvent ( QPaintEvent * event );
 protected:
@@ -88,6 +91,7 @@ protected:
 public:
     QSharedPointer<QRelayDeviceControl>  pdevice;
     unsigned int relay_bitmap;
+    int   click_x;
 };
 
 

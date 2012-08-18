@@ -197,7 +197,7 @@ void DialogCountdownOutput::SetAndWriteIoOutOnceTiming(int index,QDateTime & sta
     QVector<timing_node> timinglist;
     for(int i=0;i<pdevice->GetIoOutNum();i++) {
         timing_node node = count_down_timemap[i];
-        if(GET_IO_TIME_VALID(&node)) {
+        if(1) {  //GET_IO_TIME_VALID(&node)) {  //不管定时器是否有效，必须全部填加进去
             timinglist.push_back(node);
         }
     }
@@ -217,7 +217,7 @@ void DialogCountdownOutput::applayclick(bool)
 {
     QApplyPushbutton * buttun = (QApplyPushbutton *)sender();
     int index = buttun->dev_index;
-    qDebug("sender button = %d",index);
+    //qDebug("sender button = %d",index);
 
     QDateTime datetimebase = QDateTime::currentDateTime();
 
@@ -267,7 +267,7 @@ void DialogCountdownOutput::SetRemainTimeAndProgressBar(int index,QDateTime star
     int   end2now_secs = end.secsTo(current);
     //qDebug("%d:start to end %d , start %d ,end %d",index,start.secsTo(end),start2now_secs,end2now_secs);
     progressmap[index]->setRange(0,100);
-    if(start2now_secs > 0 && end2now_secs < 0) {
+    if(start2now_secs > 0 && end2now_secs < 0 && pdevice->relay_bitmask[index]) {
         timemap[index]->setTime(basetime.addSecs(end2now_secs *(-1)));
         int persent = end2now_secs * -100 / all_secs;
         progressmap[index]->setValue(persent);

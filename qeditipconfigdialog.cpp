@@ -61,18 +61,22 @@ void	QEditIpConfigDialog::itemClicked ( QListWidgetItem * item )
     const unsigned char * pch = pinfo->local_ip;
     ip.sprintf("%d.%d.%d.%d",pch[0],pch[1],pch[2],pch[3]);
     ui->lineEditCurrIpAddr->setText(ip);
+    ui->lineEditNewIpaddr->setText(ip);
 
     pch = pinfo->net_mask;
     ip.sprintf("%d.%d.%d.%d",pch[0],pch[1],pch[2],pch[3]);
     ui->lineEditCurrNetmask->setText(ip);
+    ui->lineEditNewNetmask->setText(ip);
 
     pch = pinfo->gateway;
     ip.sprintf("%d.%d.%d.%d",pch[0],pch[1],pch[2],pch[3]);
     ui->lineEditCurrGateway->setText(ip);
+    ui->lineEditNewGateway->setText(ip);
 
     pch = pinfo->dns;
     ip.sprintf("%d.%d.%d.%d",pch[0],pch[1],pch[2],pch[3]);
     ui->lineEditCurrDns->setText(ip);
+    ui->lineEditNewDns->setText(ip);
 }
 
 

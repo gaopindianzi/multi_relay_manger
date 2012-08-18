@@ -9,7 +9,10 @@
 #include <QMouseEvent>
 #include <QRect>
 
-
+#include "debug.h"
+#define THISINFO              0
+#define THISERROR           0
+#define THISASSERT          0
 
 
 QMyIoOutButton::QMyIoOutButton(RelayDeviceSharePonterType pdev, int index,QWidget * parent)
@@ -22,6 +25,7 @@ QMyIoOutButton::QMyIoOutButton(RelayDeviceSharePonterType pdev, int index,QWidge
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(tcp_timer()));
+    //connect(pdevice.data(),SIGNAL(DeviceWriteOneTimingFinished()),this,SLOT(OneTimingWriteFinished()));
 }
 
 void QMyIoOutButton::paintEvent ( QPaintEvent * event )
@@ -61,11 +65,23 @@ void QMyIoOutButton::mousePressEvent ( QMouseEvent * event )
     if(event->button()&Qt::LeftButton) {
         int x = event->x();
         if(x >= imagenum.width()+spaceing && x <= imagenum.width()+spaceing+image.width()) {
-            pdevice->ConvertIoOutOneBitAndSendCmd(button_index);
-            timer->start(100);
-            timer_count = 0;
+
+            debuginfo((" my io out button..%d.",button_index));
+
+            if(pdevice->io_timing_initialized) {
+
+                pdevice->TcpWriteOneTiming(button_index,!pdevice->relay_bitmask[button_index]);
+                //pdevice->ConvertIoOutOneBitAndSendCmd(button_index);  //以上指令和此指令是已经关联合并执行的
+                timer->start(100);
+                timer_count = 0;
+            }
         }
     }
+}
+
+void QMyIoOutButton::OneTimingWriteFinished(void)
+{
+  //  debuginfo(("QMyIoOutButton  one time finished."));
 }
 
 void QMyIoOutButton::tcp_timer()
@@ -78,6 +94,14 @@ void QMyIoOutButton::tcp_timer()
         this->repaint();
     }
 }
+
+
+
+
+
+
+
+
 
 
 QIoExpendSettingDialog::QIoExpendSettingDialog(RelayDeviceSharePonterType pdev,QWidget *parent) :

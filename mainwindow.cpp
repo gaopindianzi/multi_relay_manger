@@ -81,9 +81,11 @@ void  QDeviceControlWidget::IoOutCountDownSettingAct(void)
     //先读定时器寄存器，延时1S
    // pdev->TcpStartReadTimimgs();
 
-    DialogCountdownOutput dlg(pdev);
-    dlg.setWindowTitle(pdev->GetDeviceName());
-    dlg.exec();
+    if(pdev->io_timing_initialized) {
+        DialogCountdownOutput dlg(pdev);
+        dlg.setWindowTitle(pdev->GetDeviceName());
+        dlg.exec();
+    }
 }
 
 void  QDeviceControlWidget::RemoveOneItemActioN(void)
@@ -160,11 +162,12 @@ MainWindow::MainWindow(QWidget *parent) :
         InitUdpSocket();
 
         resize(app_info.app_with,app_info.app_height);
-
+#if 0
         try_version_count = 10;
         try_version_count_times = 125;
         try_version_timer.start(1000);
         connect(&try_version_timer,SIGNAL(timeout()),this,SLOT(try_timer_slot()));
+#endif
 }
 
 void MainWindow::try_timer_slot(void)
@@ -352,8 +355,8 @@ void MainWindow::CreateMenu(void)
     toolsMenu = menuBar()->addMenu(tr("&Operation"));
     toolsMenu->addAction(secect_all);
     toolsMenu->addAction(desecect_all);
-    toolsMenu->addAction(open_all_device);
-    toolsMenu->addAction(close_all_device);
+    //toolsMenu->addAction(open_all_device);
+    //toolsMenu->addAction(close_all_device);
     toolsMenu = menuBar()->addMenu(tr("Help"));
     toolsMenu->addAction(about_act);
 

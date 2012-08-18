@@ -39,6 +39,7 @@ signals:
     void DeviceAckStatus(QString status);
     //指令完成应答信号
     void DeviceWriteTimingFinished(void);
+    void DeviceWriteOneTimingFinished(void);
     void DevcieWriteRtcFinihed(void);
     void DevcieReadTimingFinihed(void);
     void DevcieReadIoNameFinihed(void);
@@ -84,6 +85,7 @@ public:
     int        MultiIoOutSetAck(QByteArray & data);
     void      ResetDevice(void);
     QBitArray   relay_bitmask;
+     bool           io_timing_initialized;
     QSharedPointer<device_info_st> & GetDeviceInfo(void) { return pdev_info; }
     QVector<timing_node> & GetDeviceIoOutTimingList(void) { return io_out_timing_list; }
     void     SetDeviceIoOutTimingList(QVector<timing_node> & timinglist);
@@ -130,6 +132,7 @@ private:  //TCP接口数据
     unsigned int      io_out_time_index;
     unsigned int      io_out_time_count;
     QVector<timing_node>  io_out_timing_list;
+
     //状态机函数
     void  SetTcpSysStatus(int newState,QString string);
     void  TcpReadIoNames(void);
@@ -145,6 +148,13 @@ private:  //TCP接口数据
     void TcpReWriteIoOutTiming(void);
     void TcpDoneWriteIoOutTiming(void);
     void TcpAckWriteIoOutTiming(QByteArray & buffer);
+    //独立定时写
+    //独立与非独立定时器写之间的模式转换，就靠这个变量
+    bool tcpTimingAloneSetFlag;
+    int    tcpTimingAloneIndex;
+
+    void TcpReWriteOneTiming(void);
+    void TcpAckWriteOneTiming(QByteArray & buffer);
     //TCP写RTC定时器
     void TcpReStartWriteRtc(void);
     void TcpDoneWriteRtc(void);
@@ -157,6 +167,7 @@ public:
     void TcpWriteIoName(unsigned char addr[2],QString name);
     void TcpStartReadTimimgs(void);
     void TcpStartWriteIoOutTiming(void);
+    void TcpWriteOneTiming(int index,bool timevalid);
     void TcpStartWriteRtc(void);
 private slots:
     void tcpconnected ();

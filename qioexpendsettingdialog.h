@@ -25,6 +25,7 @@ protected:
     void mousePressEvent ( QMouseEvent * event );
 private slots:
     void tcp_timer();
+    void OneTimingWriteFinished(void);
 private:
     RelayDeviceSharePonterType pdevice;
     int  button_index;

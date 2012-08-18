@@ -10,9 +10,9 @@
 #include "rc4.h"
 
 #include "debug.h"
-#define THISINFO             0
-#define THISERROR           1
-#define THISASSERT         1
+#define THISINFO           0
+#define THISERROR           0
+#define THISASSERT         0
 
 uint16_t CRC16(unsigned char *Array,unsigned int Len);
 
@@ -50,6 +50,7 @@ QRelayDeviceControl::QRelayDeviceControl(QObject * parent) :
 
     bdevcie_info_is_useful = false;
     relay_bitmask_inited  = false;
+    io_timing_initialized = false;
 
 
     tcp_port = 2000;
@@ -118,12 +119,19 @@ void	QRelayDeviceControl::tcpreadyRead ()
         break;
         case CMD_GET_TIMING_INFO:
         {
-            TcpAckReadTimimgs(arry);
+            if(tcpTimingAloneSetFlag == false) {
+                TcpAckReadTimimgs(arry);
+            } else {
+            }
         }
         break;
         case CMD_SET_TIMING_INFO:
         {
-            TcpAckWriteIoOutTiming(arry);
+            if(tcpTimingAloneSetFlag == false) {
+                TcpAckWriteIoOutTiming(arry);
+            } else {
+                TcpAckWriteOneTiming(arry);
+            }
         }
         break;
         case CMD_GET_IO_IN_VALUE:
@@ -193,11 +201,18 @@ void QRelayDeviceControl::tcp_timer()
                 if(tcp_cmd_number == CMD_GET_IO_NAME) {
                     TcpReadIoNames();
                 } else if(tcp_cmd_number == CMD_GET_TIMING_INFO) {
-                    TcpReadTimimgs();
+                    if(tcpTimingAloneSetFlag == false) {
+                        TcpReadTimimgs();
+                    } else {
+                    }
                 } else if(tcp_cmd_number == CMD_GET_IO_IN_VALUE) {
                     TcpReReadIoInValue();
                 } else if(tcp_cmd_number == CMD_SET_TIMING_INFO) {
-                    TcpReWriteIoOutTiming();
+                    if(tcpTimingAloneSetFlag == false) {
+                        TcpReWriteIoOutTiming();
+                    } else {
+                        TcpReWriteOneTiming();
+                    }
                 } else if(tcp_cmd_number == CMD_SET_RTC_VALUE) {
                     TcpReStartWriteRtc();
                 } else { //±ðµÄÖ¸Áî
@@ -377,6 +392,8 @@ void  QRelayDeviceControl::TcpStartReadTimimgs(void)
 
     debuginfo(("start read io timimes..."));
 
+    tcpTimingAloneSetFlag = false;
+
     io_out_time_index = 0;
     io_out_time_count = 0;
     tcp_ack_timeout_count = 0;
@@ -447,6 +464,7 @@ void QRelayDeviceControl::TcpAckReadTimimgs(QByteArray & buffer)
 done_read:
         sys_init_bitmask &= ~SYS_IO_TIME;
         SetTcpSysStatus(TCP_CMD_IDLE,tr("finished reading io timings."));
+        io_timing_initialized = true;
         emit DevcieReadTimingFinihed();
     }
     tcp_ack_timeout_count = 0;
@@ -457,9 +475,87 @@ void  QRelayDeviceControl::SetDeviceIoOutTimingList(QVector<timing_node> & timin
     io_out_timing_list = timinglist;
 }
 
+void QRelayDeviceControl::TcpWriteOneTiming(int index,bool timevalid)
+{
+    QByteArray data;
+
+    tcpTimingAloneSetFlag = true;
+    tcpTimingAloneIndex = index;
+
+    io_out_time_index = index;
+    io_out_time_count = 1;
+
+    debuginfo(("start write io one timing"));
+
+
+    tcp_ack_timeout_count = 0;
+
+    data.resize(sizeof(CmdHead) + sizeof(CmdTimingNode));
+    CmdHead  * pcmd = (CmdHead *)data.data_ptr()->data;
+    CmdTimingNode *  rio  = (CmdTimingNode *)GET_CMD_DATA(pcmd);
+    pcmd->cmd = tcp_cmd_number = CMD_SET_TIMING_INFO;
+    pcmd->cmd_index = ++cmd_index;
+    pcmd->cmd_len = sizeof(CmdTimingNode);
+    rio->index = io_out_time_index;
+
+    timing_node node = io_out_timing_list[io_out_time_index];
+    if(timevalid) {
+        SET_IO_TIME_VALID(&node,true);
+    } else {
+        SET_IO_TIME_VALID(&node,false);
+    }
+    rio->node = io_out_timing_list[io_out_time_index] = node;
+
+    SET_CMD_STATE(pcmd,CMD_REQ_NEXT);
+    SetTcpSysStatus(TCP_CMD_WAIT_ACK,tr("writing io one timing..."));
+    this->tcp_socket.write(data.data(),data.size());
+}
+void QRelayDeviceControl::TcpReWriteOneTiming(void)
+{
+    QByteArray data;
+
+    tcpTimingAloneSetFlag = true;
+
+    io_out_time_index = tcpTimingAloneIndex;
+    io_out_time_count = 1;
+
+    debuginfo(("start re write io one timing"));
+
+    data.resize(sizeof(CmdHead) + sizeof(CmdTimingNode));
+    CmdHead  * pcmd = (CmdHead *)data.data_ptr()->data;
+    CmdTimingNode *  rio  = (CmdTimingNode *)GET_CMD_DATA(pcmd);
+    pcmd->cmd = tcp_cmd_number = CMD_SET_TIMING_INFO;
+    pcmd->cmd_index = ++cmd_index;
+    pcmd->cmd_len = sizeof(CmdTimingNode);
+    rio->index = io_out_time_index;
+    rio->node = io_out_timing_list[io_out_time_index];
+    SET_CMD_STATE(pcmd,CMD_REQ_NEXT);
+    SetTcpSysStatus(TCP_CMD_WAIT_ACK,tr("writing io one timing..."));
+    this->tcp_socket.write(data.data(),data.size());
+}
+
+void QRelayDeviceControl::TcpAckWriteOneTiming(QByteArray & buffer)
+{
+    CmdHead  * pcmd = (CmdHead *)buffer.data_ptr()->data;
+    if(GET_CMD_OK(pcmd)) {
+        if(GET_CMD_STATE(pcmd) == CMD_CURRENT_DOING) {
+            debuginfo(("tcp ack write one done,index(%d),all(%d)",io_out_time_index,io_out_time_count));
+            SetTcpSysStatus(TCP_CMD_IDLE,tr("done writing one io timings!"));
+            //emit DeviceWriteOneTimingFinished();
+            ConvertIoOutOneBitAndSendCmd(io_out_time_index);
+        } else {
+            debugerror(("tcp ack write io out timing error! 2"));
+        }
+    } else {
+        debugerror(("tcp ack write io out timing error! 1"));
+    }
+}
+
 void QRelayDeviceControl::TcpStartWriteIoOutTiming(void)
 {
     QByteArray data;
+
+    tcpTimingAloneSetFlag = false;
 
     io_out_time_index = 0;
     io_out_time_count = io_out_timing_list.size();
