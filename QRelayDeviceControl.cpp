@@ -10,9 +10,9 @@
 #include "rc4.h"
 
 #include "debug.h"
-#define THISINFO           0
-#define THISERROR           0
-#define THISASSERT         0
+#define THISINFO           1
+#define THISERROR          1
+#define THISASSERT         1
 
 uint16_t CRC16(unsigned char *Array,unsigned int Len);
 
@@ -498,6 +498,7 @@ void QRelayDeviceControl::TcpWriteOneTiming(int index,bool timevalid)
     pcmd->cmd_len = sizeof(CmdTimingNode);
     rio->index = io_out_time_index;
 
+
     timing_node node = io_out_timing_list[io_out_time_index];
     if(timevalid) {
         SET_IO_TIME_VALID(&node,true);
@@ -745,8 +746,8 @@ void QRelayDeviceControl::TcpAckWriteRtc(QByteArray & buffer)
 void QRelayDeviceControl::TimeoutUpdataInfo(void)
 {
     //debuginfo(("timeout updata..."));
-    GetDevcieInfoFormDevcie();
-    ReadIoOut();
+    //GetDevcieInfoFormDevcie();
+    //ReadIoOut();
     if(online_timeout > 0) {
         online_timeout--;
         devicestatus  = tr("On Line");
@@ -976,9 +977,9 @@ void QRelayDeviceControl::ConvertIoOutOneBitAndSendCmd(int bit)
     pfc->pad = 0x00;
     unsigned int crc = CRC16(&mst->command_len,sb.size() - 3);
     debuginfo(("send ConvertIoOutOneBitAndSendCmd CRC(0x%X)",crc));
-    //dumpthisdata((const char *)mst,sb.size());
     mst->crc[0] = (unsigned char)(crc  & 0xFF);
     mst->crc[1] = (unsigned char)(crc >> 8);
+	dumpthisdata((const char *)mst,sb.size());
     ack_status = tr("set io out bits...");
     if(is_checked) {
         emit DeviceAckStatus(ack_status);
@@ -1251,10 +1252,13 @@ last_config_password:
         }
     } else if(CMD_MODBUSPACK_SEND == pst->command) {
         int minlen = sizeof(modbus_command_st) + sizeof(modbus_tcp_head);
-        if(pst->command_len < minlen) {
-            debugerror(("modbus command data size too small...ERROR!"));
+		modbus_command_st * pmst = (modbus_command_st *)pst;
+        if(pmst->command_len < minlen) {
+            debugerror(("modbus command data size too small...ERROR!,pst->command_len(%d) < minlen(%d)",pmst->command_len,minlen));
             goto encrypting_again;
-        }
+		} else {
+			debuginfo(("modbus command data size:pst->command_len(%d) >= minlen(%d)",pmst->command_len,minlen));
+		}
         modbus_tcp_head * mh = (modbus_tcp_head *)GET_MODBUS_COMMAND_DATA(pst);
         switch(mh->function_code)
         {

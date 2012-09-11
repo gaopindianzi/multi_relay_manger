@@ -2,6 +2,9 @@
 #define __MOSBUS_INTERFACE_H__
 
 
+#pragma pack(push)//保存对齐状态
+#pragma pack(1)  //设置为1字节对齐
+
 typedef struct _modbus_tcp_head
 {
 	uint8_t idh;
@@ -56,5 +59,8 @@ typedef struct _modbus_type_fc15_cmd
     uint8_t byte_count;
 } modbus_type_fc15_cmd;
 
+
+
+#pragma pack(pop)//恢复对齐状态
 
 #endif

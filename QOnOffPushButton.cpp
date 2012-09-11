@@ -10,7 +10,7 @@
 #include "QRelayDeviceControl.h"
 #include "mainwindow.h"
 #include "debug.h"
-#define THISINFO               0
+#define THISINFO               1
 #define THISERROR            1
 #define THISASSERT          1
 
@@ -153,6 +153,9 @@ void QRelayValueSingalChannalButton::paintEvent ( QPaintEvent * event )
     QPainter painter(this);
     QImage image;
     int num = pdevice->GetIoOutNum();
+    if(pdevice->relay_bitmask.size()<num) {
+        pdevice->relay_bitmask.resize(num);
+    }
     for(int i=0;i<num;i++) {
         if(pdevice->relay_bitmask[i]) {
             image.load(":/sys/sys_icon/sources/ON.png");

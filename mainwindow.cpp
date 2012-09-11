@@ -364,8 +364,8 @@ void MainWindow::CreateMenu(void)
 
 #if     1 //for debug
     password_item itm;
-    itm.alias = "admin";
-    itm.pwd = "admin";
+    itm.alias = "abc";
+    itm.pwd = "abc";
     password_list.push_back(itm);
 #endif
      //QList<password_item>   password_list;

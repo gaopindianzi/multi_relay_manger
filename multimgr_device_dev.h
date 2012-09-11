@@ -1,6 +1,10 @@
 #ifndef __MULTIMGR_DEVICE_DEV_H__
 #define __MULTIMGR_DEVICE_DEV_H__
 
+
+#pragma pack(push)//保存对齐状态
+#pragma pack(1)  //设置为1字节对齐
+
 #define CMD_GET_DEVICE_INFO        0
 #define CMD_SET_DEVICE_INFO         1
 #define CMD_MODBUSPACK_SEND     2
@@ -51,8 +55,8 @@ typedef struct __device_info_st
 typedef struct __modbus_command_st
 {
 	unsigned char command;
-    unsigned char crc[2]; //对以下内容进行CRC校验
-    unsigned char command_len;
+	unsigned char crc[2]; //对以下内容进行CRC校验
+	unsigned char command_len;
 } modbus_command_st;
 
 #define  GET_MODBUS_COMMAND_DATA(ptr)   ((void *)(((unsigned char *)(ptr))+sizeof(modbus_command_st)))
@@ -65,6 +69,8 @@ typedef struct __reset_device_st
     unsigned char crc[2];
 } reset_device_st;
 
+
+#pragma pack(pop)//恢复对齐状态
 
 #endif
 
