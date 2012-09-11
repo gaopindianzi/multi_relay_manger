@@ -52,7 +52,7 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
 
 
 
-    this->setFixedHeight(40+(ioout_num * 34 + 22));  //定参数外框+IO数量高度    
+    this->setFixedHeight(40+(ioout_num * 34 + 22));  //定参数外框+IO数量高度
     this->ui->groupBox->setFixedHeight(15+(ioout_num * 34 + 22));
     this->setFixedWidth(730);
     this->ui->groupBox->setFixedWidth(715);
@@ -149,6 +149,7 @@ DialogCountdownOutput::DialogCountdownOutput(RelayDeviceSharePonterType pdev,QWi
             linelayout->addWidget(okbutton);
             linelayout->addSpacing(6);
             linelayout->addStretch();
+
             ui->verticalLayout->addLayout(linelayout);
             ui->verticalLayout->addSpacing(5);
         }

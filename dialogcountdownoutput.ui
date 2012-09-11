@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>357</height>
+    <width>762</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>5</x>
      <y>10</y>
      <width>746</width>
-     <height>331</height>
+     <height>721</height>
     </rect>
    </property>
    <property name="title">
@@ -31,10 +31,14 @@
       <x>10</x>
       <y>20</y>
       <width>726</width>
-      <height>301</height>
+      <height>681</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout"/>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
+    </layout>
    </widget>
   </widget>
  </widget>

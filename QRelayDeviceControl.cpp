@@ -10,9 +10,9 @@
 #include "rc4.h"
 
 #include "debug.h"
-#define THISINFO           1
-#define THISERROR          1
-#define THISASSERT         1
+#define THISINFO           0
+#define THISERROR          0
+#define THISASSERT         0
 
 uint16_t CRC16(unsigned char *Array,unsigned int Len);
 
@@ -746,8 +746,8 @@ void QRelayDeviceControl::TcpAckWriteRtc(QByteArray & buffer)
 void QRelayDeviceControl::TimeoutUpdataInfo(void)
 {
     //debuginfo(("timeout updata..."));
-    //GetDevcieInfoFormDevcie();
-    //ReadIoOut();
+    GetDevcieInfoFormDevcie();
+    ReadIoOut();
     if(online_timeout > 0) {
         online_timeout--;
         devicestatus  = tr("On Line");
@@ -1150,6 +1150,7 @@ int  QRelayDeviceControl::GetIoOutNum(void)
     case EXT_BOARD_IS_2CHIN_2CHOUT_BOX:return 2;
     case EXT_BOARD_IS_4CHIN_4CHOUT: return 4;
     case EXT_BOARD_IS_8CHIN_8CHOUT_V2: return 8;
+    case RELAY_PLATFORM_16CHIN_16CHOUT_30A:
     case RELAY_PLATFORM_16CHOUT_HOST_RESET:
     case EXT_BOARD_IS_16CHOUT:return 16;
     default:
@@ -1166,6 +1167,7 @@ QString QRelayDeviceControl::GetDeviceModelName(void)
     case EXT_BOARD_IS_8CHIN_8CHOUT_V2: return tr("8 ch dig input,8 ch relay output.");
     case EXT_BOARD_IS_16CHOUT:return tr("16 ch relay output.");
     case RELAY_PLATFORM_16CHOUT_HOST_RESET: return tr("16 ch remote host reseter.");
+    case RELAY_PLATFORM_16CHIN_16CHOUT_30A: return tr("16 ch input and 16 ch 30A relay output.");
     }
 }
 

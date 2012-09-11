@@ -10,9 +10,9 @@
 #include "QRelayDeviceControl.h"
 #include "mainwindow.h"
 #include "debug.h"
-#define THISINFO               1
-#define THISERROR            1
-#define THISASSERT          1
+#define THISINFO               0
+#define THISERROR            0
+#define THISASSERT          0
 
 QSetOnPushButton::QSetOnPushButton(RelayDeviceSharePonterType pdev,QWidget * parent )
     : QPushButton(parent)

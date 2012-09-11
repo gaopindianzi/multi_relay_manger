@@ -23,9 +23,9 @@
 
 #include "debug.h"
 
-#define THISINFO              1
-#define THISERROR           1
-#define THISASSERT          1
+#define THISINFO            0
+#define THISERROR           0
+#define THISASSERT          0
 
 
 
@@ -364,8 +364,8 @@ void MainWindow::CreateMenu(void)
 
 #if     1 //for debug
     password_item itm;
-    itm.alias = "abc";
-    itm.pwd = "abc";
+    itm.alias = "admin";
+    itm.pwd = "admin";
     password_list.push_back(itm);
 #endif
      //QList<password_item>   password_list;

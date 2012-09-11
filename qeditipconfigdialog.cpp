@@ -10,8 +10,8 @@
 
 #include "debug.h"
 #define THISINFO               0
-#define THISERROR            1
-#define THISASSERT          1
+#define THISERROR           0
+#define THISASSERT          0
 
 QEditIpConfigDialog::QEditIpConfigDialog(QWidget *parent) :
     QDialog(parent),

@@ -13,12 +13,19 @@
 
 //°å×ÓµÄÐÍºÅ
 //
-#define  EXT_BOARD_IS_2CHIN_2CHOUT_BOX  6
-#define  EXT_BOARD_IS_4CHIN_4CHOUT          5
-#define  EXT_BOARD_IS_8CHIN_8CHOUT_V2    9
+
+
+
+
+#define  EXT_BOARD_IS_2CHIN_2CHOUT_BOX          6
+#define  EXT_BOARD_IS_4CHIN_4CHOUT              5
+#define  EXT_BOARD_IS_8CHIN_8CHOUT_V2           9
 #define  EXT_BOARD_IS_16CHOUT                   4
 #define  RELAY_PLATFORM_16CHOUT_HOST_RESET      10
-//
+#define  RELAY_PLATFORM_16CHIN_16CHOUT_30A      11
+
+
+
 typedef struct __device_info_st
 {
     unsigned char command;
