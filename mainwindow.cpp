@@ -52,8 +52,10 @@ void QDeviceControlWidget::contextMenuEvent(QContextMenuEvent *event)
             QMenu menu(this);
             setIoExternSetAction->setData(var);
             menu.addAction(setIoExternSetAction);
+#if 0 //这里是倒计时的快捷面板
             CountdownMangerAct->setData(var);
             menu.addAction(CountdownMangerAct);
+#endif //倒计时面板
             menu.exec(event->globalPos());
         } else {
             debuginfo(("pdev is not valid!"));
@@ -359,28 +361,29 @@ void MainWindow::CreateMenu(void)
     toolsMenu->addAction(secect_all);
 
     toolsMenu->addAction(desecect_all);
-    //toolsMenu->addAction(open_all_device);
-    //toolsMenu->addAction(close_all_device);
+    toolsMenu->addAction(open_all_device);
+    toolsMenu->addAction(close_all_device);
     toolsMenu = menuBar()->addMenu(tr("Help"));
     toolsMenu->addAction(about_act);
 
 #if 1
     //ToolBar
-    fileToolBar = addToolBar(tr("File"));
+    fileToolBar = addToolBar(tr("Edit"));
     fileToolBar->addAction(secect_all);
     fileToolBar->addAction(desecect_all);
-    //fileToolBar->addAction(saveAct);
-
-    //editToolBar = addToolBar(tr("Edit"));
-    //editToolBar->addAction(cutAct);
-    //editToolBar->addAction(copyAct);
-    //editToolBar->addAction(pasteAct);
+    fileToolBar->addAction(open_all_device);
+    fileToolBar->addAction(close_all_device);
 #endif
 
 #if     1 //for debug
     password_item itm;
+#if 0 //2233
     itm.alias = "2233";
     itm.pwd = "2233";
+    password_list.push_back(itm);
+#endif //2233
+    itm.alias = "admin";
+    itm.pwd = "admin";
     password_list.push_back(itm);
 #endif
      //QList<password_item>   password_list;
@@ -567,12 +570,15 @@ void MainWindow::CreateDevcieTable(void)
 #endif
         //QHeaderView::InteractivedeviceTable->verticalHeader()->hide();
 
-        deviceTable->hideColumn(2);
+
+/* 一下可以隐藏某些功能  */
+        //deviceTable->hideColumn(2);
         deviceTable->hideColumn(3);
         deviceTable->hideColumn(4);
-        deviceTable->hideColumn(6);
-        deviceTable->hideColumn(7);
-        deviceTable->hideColumn(index-1);
+        //deviceTable->hideColumn(6);
+        //deviceTable->hideColumn(7);
+        //deviceTable->hideColumn(index-1);
+/*  以上是影藏某些按钮的  */
         //排版
         QVBoxLayout *layout = new QVBoxLayout;
         layout->addWidget(deviceTable);

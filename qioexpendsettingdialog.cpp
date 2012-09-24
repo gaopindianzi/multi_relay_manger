@@ -70,8 +70,11 @@ void QMyIoOutButton::mousePressEvent ( QMouseEvent * event )
 
             if(pdevice->io_timing_initialized) {
 
+#if 0 // 为了倒计时而设计的
                 pdevice->TcpWriteOneTiming(button_index,!pdevice->relay_bitmask[button_index]);
-                //pdevice->ConvertIoOutOneBitAndSendCmd(button_index);  //以上指令和此指令是已经关联合并执行的
+#else  //这是经典版本的控制
+                pdevice->ConvertIoOutOneBitAndSendCmd(button_index);  //以上指令和此指令是已经关联合并执行的
+#endif
                 timer->start(100);
                 timer_count = 0;
             }

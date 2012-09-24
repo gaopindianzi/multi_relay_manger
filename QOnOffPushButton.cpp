@@ -194,8 +194,12 @@ void QRelayValueSingalChannalButton::mousePressEvent ( QMouseEvent * event )
 
         click_x = x;
 
+#if  0  //一下是为了倒计时而设计的
         pdevice->TcpWriteOneTiming(x,!pdevice->relay_bitmask[x]);
-
+#else
+        //这里普通开核关的模式
+        pdevice->ConvertIoOutOneBitAndSendCmd(click_x);
+#endif
 
         this->update();
     }
