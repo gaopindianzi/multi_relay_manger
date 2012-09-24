@@ -168,6 +168,8 @@ MainWindow::MainWindow(QWidget *parent) :
         try_version_timer.start(1000);
         connect(&try_version_timer,SIGNAL(timeout()),this,SLOT(try_timer_slot()));
 #endif
+
+
 }
 
 void MainWindow::try_timer_slot(void)
@@ -237,14 +239,14 @@ void MainWindow::CreateAction(void)
     password_manger = new QAction(tr("&Communication password..."),this);
     connect(password_manger,SIGNAL(triggered()),this,SLOT(PasswordConfig()));
 
-    secect_all = new QAction(tr("&Selected all device"),this);
+    secect_all = new QAction(QIcon(":/sys/sys_icon/sources/alarm_clock.png"),tr("&Selected all device"),this);
     connect(secect_all,SIGNAL(triggered()),this,SLOT(SelectAll()));
-    desecect_all = new QAction(tr("&Deselected all device"),this);
+    desecect_all = new QAction(QIcon(":/sys/sys_icon/sources/alarm_clock.png"),tr("&Deselected all device"),this);
     connect(desecect_all,SIGNAL(triggered()),this,SLOT(DesecectAll()));
 
-    open_all_device = new QAction(tr("&Set all selected device output ON"),this);
+    open_all_device = new QAction(QIcon(":/sys/sys_icon/sources/alarm_clock.png"),tr("&Set all selected device output ON"),this);
     connect(open_all_device,SIGNAL(triggered()),this,SLOT(OpenAllListDeviceIoOutput()));
-    close_all_device = new QAction(tr("&Set all selected device output OFF"),this);
+    close_all_device = new QAction(QIcon(":/sys/sys_icon/sources/alarm_clock.png"),tr("&Set all selected device output OFF"),this);
     connect(close_all_device,SIGNAL(triggered()),this,SLOT(CloseAllListDeviceIoOutput()));
 
     selectChineseLanguage = new QAction(tr("Chinese"),this);
@@ -353,19 +355,32 @@ void MainWindow::CreateMenu(void)
     toolsMenu->addAction(selectChineseLanguage);
 #endif
     toolsMenu = menuBar()->addMenu(tr("&Operation"));
+
     toolsMenu->addAction(secect_all);
+
     toolsMenu->addAction(desecect_all);
     //toolsMenu->addAction(open_all_device);
     //toolsMenu->addAction(close_all_device);
     toolsMenu = menuBar()->addMenu(tr("Help"));
     toolsMenu->addAction(about_act);
 
+#if 1
+    //ToolBar
+    fileToolBar = addToolBar(tr("File"));
+    fileToolBar->addAction(secect_all);
+    fileToolBar->addAction(desecect_all);
+    //fileToolBar->addAction(saveAct);
 
+    //editToolBar = addToolBar(tr("Edit"));
+    //editToolBar->addAction(cutAct);
+    //editToolBar->addAction(copyAct);
+    //editToolBar->addAction(pasteAct);
+#endif
 
 #if     1 //for debug
     password_item itm;
-    itm.alias = "admin";
-    itm.pwd = "admin";
+    itm.alias = "2233";
+    itm.pwd = "2233";
     password_list.push_back(itm);
 #endif
      //QList<password_item>   password_list;

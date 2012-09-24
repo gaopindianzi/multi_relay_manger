@@ -16,6 +16,7 @@
 #include <QSystemTrayIcon>
 #include <QTranslator>
 #include <QThread>
+#include <QToolBar>
 #include "PasswordItemDef.h"
 #include "appinfo.h"
 
@@ -116,6 +117,7 @@ private:
     QAction * about_act;
     QMenu *fileMenu;
     QMenu *toolsMenu;
+    QToolBar *fileToolBar;
 private:
     QWidget *centralWidget;
     //device table
