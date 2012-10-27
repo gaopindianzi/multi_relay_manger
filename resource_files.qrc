@@ -26,6 +26,12 @@
         <file>sources/16.png</file>
         <file>sources/alarm_clock.png</file>
         <file>sources/ten_cross.png</file>
+        <file>sources/ALL_OFF.png</file>
+        <file>sources/ALL_ON.png</file>
+        <file>sources/sOFF.png</file>
+        <file>sources/sON.png</file>
+        <file>sources/deselall.png</file>
+        <file>sources/selall.png</file>
     </qresource>
     <qresource prefix="/icon/heart">
         <file>heart.svg</file>
