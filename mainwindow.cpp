@@ -366,7 +366,7 @@ void MainWindow::CreateMenu(void)
     toolsMenu = menuBar()->addMenu(tr("Help"));
     toolsMenu->addAction(about_act);
 
-#if 1
+#if 0
     //ToolBar
     fileToolBar = addToolBar(tr("Edit"));
     fileToolBar->addAction(secect_all);
@@ -573,10 +573,10 @@ void MainWindow::CreateDevcieTable(void)
 
 /* 一下可以隐藏某些功能  */
         //deviceTable->hideColumn(2);
-        deviceTable->hideColumn(3);
-        deviceTable->hideColumn(4);
+        //deviceTable->hideColumn(3);
+        //deviceTable->hideColumn(4);
         //deviceTable->hideColumn(6);
-        //deviceTable->hideColumn(7);
+        ///deviceTable->hideColumn(7);
         //deviceTable->hideColumn(index-1);
 /*  以上是影藏某些按钮的  */
         //排版
