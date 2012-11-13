@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 
     QSplashScreen * splash = new QSplashScreen;
-    splash->setPixmap(QPixmap(":/sys/sys_icon/sources/start.png"));
+    splash->setPixmap(QPixmap(":/sys/sys_icon/sources/start_hangzhoudunhongzhikeji.png"));
     splash->show();
     w.sleep(3);
     w.show();
