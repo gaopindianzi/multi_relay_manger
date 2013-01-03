@@ -18,7 +18,7 @@ void AboutDialog::paintEvent ( QPaintEvent * event )
 {
     QPainter painter(this);
     QImage image;
-    image.load(":/sys/sys_icon/sources/about_hangzhoudunhongzhikeji.png");
+    image.load(":/sys/sys_icon/sources/ABOUT.png");
     QRectF target(this->rect().left(),this->rect().top(),image.width(),image.height());
     painter.drawImage(target, image);
 }

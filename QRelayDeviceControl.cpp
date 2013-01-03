@@ -964,8 +964,8 @@ void QRelayDeviceControl::ConvertIoOutOneBitAndSendCmd(int bit)
     modbus_type_fc5_cmd * pfc  = (modbus_type_fc5_cmd *)GET_MODBUS_DATA(mh);
     pfc->slave_addr = 0;
     pfc->function_code = 0x05;
-    pfc->ref_number_h = bit >> 8;
-    pfc->ref_number_l = bit & 0xFF;
+    pfc->ref_number_h = (512+bit) >> 8;
+    pfc->ref_number_l = (512+bit) & 0xFF;
     int max = relay_bitmask.size();
     max = ((bit+1)>max)?(bit+1):max;
     relay_bitmask.resize(max);
@@ -1005,6 +1005,7 @@ int QRelayDeviceControl::ConvertIoOutOneBitAndSendCmdAck(QByteArray & data)
     unsigned int bit = pfc->ref_number_h;
     bit <<= 8;
     bit |= pfc->ref_number_l;
+    bit -= 512; //
     debuginfo(("convert io ack bit = %d",bit));
     unsigned int max = relay_bitmask.size();
     max = ((bit+1)>max)?(bit+1):max;
@@ -1033,8 +1034,8 @@ void QRelayDeviceControl::ReadIoOut(void)
     mh->lengthl = (unsigned char)(sizeof(modbus_type_fc1_cmd) & 0xFF);
     fc->slave_addr = 0;
     fc->function_code = 0x01;
-    fc->ref_number_h = 0;
-    fc->ref_number_l = 0;
+    fc->ref_number_h = (512>>8);
+    fc->ref_number_l = (512&0xFF);
     fc->bit_count_h = (unsigned char)(this->GetIoOutNum() >> 8);
     fc->bit_count_l = (unsigned char)(this->GetIoOutNum() & 0xFF);
     mst->command = CMD_MODBUSPACK_SEND;
@@ -1101,8 +1102,8 @@ void QRelayDeviceControl::MultiIoOutSet(unsigned int start_index,QBitArray bit_m
     mh->protocoll = 0;
     mh->lengthh = (unsigned char)((7 + bitbytes) >> 8);
     mh->lengthl = (unsigned char)((7 + bitbytes) & 0xFF);
-    fc->ref_number_h = (unsigned char)(start_index>>8);
-    fc->ref_number_l = (unsigned char)(start_index&0xFF);
+    fc->ref_number_h = (unsigned char)((512+start_index)>>8); //ĞŞ¸Ä¸¨Öú¼Ä´æÆ÷
+    fc->ref_number_l = (unsigned char)((512+start_index)&0xFF);
     fc->bit_count_h = (unsigned char)(bit_mask.size() >> 8);
     fc->bit_count_l = (unsigned char)(bit_mask.size() & 0xFF);
     fc->byte_count = (unsigned char)bitbytes;
